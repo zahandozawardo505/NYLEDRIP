@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NileDrip | Become a Seller</title>
+     <link rel="stylesheet" href="../CSS/style-base.css">
+    <link rel="stylesheet" href="../CSS/style-sellersignup.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+               <a href="../index.html" class="logo">
+                    NILE<span class="drip">DRIP</span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="login.html" class="nav-link">Login</a>
+                <a href="signup.html" class="nav-link">Sign Up</a>
+            </div>
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Seller Signup Section -->
+    <section class="seller-signup-section">
+        <div class="container">
+            <div class="seller-form-wrapper">
+                <div class="seller-form-container">
+                    <h1>Turn Your Brand into a Movement</h1>
+                    <p class="subtitle">Join NileDrip and reach customers who are hungry for authentic Egyptian fashion</p>
+
+                    <form class="seller-form" id="sellerForm">
+                        <!-- Step 1: Brand Info -->
+                        <div class="form-step active" id="step1">
+                            <h2 class="step-title">Tell us about your brand</h2>
+
+                            <div class="form-group">
+                                <label for="brandName">Brand Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="brandName" 
+                                    name="brandName" 
+                                    placeholder="Your awesome brand"
+                                    required
+                                >
+                                <span class="error-message" id="brandNameError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brandDescription">Brand Description *</label>
+                                <textarea 
+                                    id="brandDescription" 
+                                    name="brandDescription" 
+                                    placeholder="What makes your brand unique? What's your story?"
+                                    rows="4"
+                                    required
+                                ></textarea>
+                                <span class="error-message" id="brandDescriptionError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brandCategory">Product Category *</label>
+                                <select id="brandCategory" name="brandCategory" required>
+                                    <option value="">Select a category</option>
+                                    <option value="hoodies">Hoodies</option>
+                                    <option value="tees">T-Shirts</option>
+                                    <option value="sweatpants">Sweatpants</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                                <span class="error-message" id="brandCategoryError"></span>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ownerName">Owner Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="ownerName" 
+                                        name="ownerName" 
+                                        placeholder="Your full name"
+                                        required
+                                    >
+                                    <span class="error-message" id="ownerNameError"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ownerPhone">Phone Number *</label>
+                                    <input 
+                                        type="tel" 
+                                        id="ownerPhone" 
+                                        name="ownerPhone" 
+                                       
+                                        required
+                                    >
+                                    <span class="error-message" id="ownerPhoneError"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Contact & Documents -->
+                        <div class="form-step" id="step2">
+                            <h2 class="step-title">Contact & Documentation</h2>
+
+                            <div class="form-group">
+                                <label for="sellerEmail">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    id="sellerEmail" 
+                                    name="email" 
+                                    placeholder="your@email.com"
+                                    required
+                                >
+                                <span class="error-message" id="sellerEmailError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="businessLicense">Business License/ID *</label>
+                                <div class="file-input-wrapper">
+                                    <input 
+                                        type="file" 
+                                        id="businessLicense" 
+                                        name="businessLicense"
+                                        accept="image/*,.pdf"
+                                        required
+                                    >
+                                    <span class="file-label">Upload your business license or national ID</span>
+                                </div>
+                                <span class="error-message" id="businessLicenseError"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bankAccount">Bank Account Number *</label>
+                                <input 
+                                    type="text" 
+                                    id="bankAccount" 
+                                    name="bankAccount" 
+                                    placeholder="Your bank account for payments"
+                                    required
+                                >
+                                <span class="error-message" id="bankAccountError"></span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Verification -->
+                        <div class="form-step" id="step3">
+                            <h2 class="step-title">Almost done!</h2>
+
+                            <div class="checkbox-container">
+                                <div class="checkbox-card" onclick="document.getElementById('termsCheck').click()">
+                                    <input type="checkbox" id="termsCheck" name="termsCheck" required onclick="event.stopPropagation()">
+                                    <label for="termsCheck">I agree to the <a href="#" class="auth-link" onclick="event.stopPropagation()">Seller Terms & Conditions</a> and understand my account will be verified</label>
+                                </div>
+
+                                <div class="checkbox-card" onclick="document.getElementById('authenticityCheck').click()">
+                                    <input type="checkbox" id="authenticityCheck" name="authenticityCheck" required onclick="event.stopPropagation()">
+                                    <label for="authenticityCheck">I confirm that all information provided is accurate and my brand products are authentic</label>
+                                </div>
+                            </div>
+
+                            <div class="verification-info">
+                                <h4>✅ What happens next?</h4>
+                                <ul>
+                                    <li>We review your application (24-48 hours)</li>
+                                    <li>You'll receive an email confirmation</li>
+                                    <li>Access your seller dashboard</li>
+                                    <li>Start adding products immediately</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Form Navigation -->
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">← Previous</button>
+                            <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">Submit Application</button>
+                        </div>
+
+                        <!-- Step Indicator -->
+                        <div class="step-indicator">
+                            <div class="step-dot active" data-step="1">1</div>
+                            <div class="step-line"></div>
+                            <div class="step-dot" data-step="2">2</div>
+                            <div class="step-line"></div>
+                            <div class="step-dot" data-step="3">3</div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="seller-benefits">
+                    <h3>Why Sell on NileDrip?</h3>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">📊</span>
+                        <h4>Real Analytics</h4>
+                        <p>Track sales, visitors, and customer feedback in real-time</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">💰</span>
+                        <h4>Better Margins</h4>
+                        <p>Zero middleman fees. Keep 95% of your profit</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🎯</span>
+                        <h4>Targeted Audience</h4>
+                        <p>Reach customers specifically looking for authentic local brands</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">📱</span>
+                        <h4>Easy Management</h4>
+                        <p>Simple dashboard to manage inventory and orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script src="../JS/store.js"></script>
+<script src="../JS/db.js"></script>
+<script src="../JS/utils.js"></script>
+
+<script src="../JS/seller-signup.js"></script>
+
+<script src="../JS/theme.js"></script>
+</body>
+</html>

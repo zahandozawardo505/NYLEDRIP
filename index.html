@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NileDrip - Local Brands, Maximum Drip</title>
+    <link rel="stylesheet" href="CSS/style-base.css">
+    <link rel="stylesheet" href="CSS/style-main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <!-- Column 1: Logo -->
+            <div class="navbar-brand">
+                <a href="index.html" class="logo">
+                    NILE<span class="drip">DRIP</span>
+                </a>
+            </div>
+            
+            <!-- Column 2: Center Menu -->
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="HTML/shop.html" class="nav-link">Shop</a>
+                <a href="HTML/login.html" class="nav-link">Login</a>
+                <a href="HTML/signup.html" class="nav-link">Sign Up</a>
+            </div>
+
+            <!-- Column 3: Symmetrical Actions -->
+            <div class="navbar-actions">
+                <a href="HTML/wishlist.html" class="cart-icon-btn" aria-label="Wishlist">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </a>
+                <a href="HTML/cart.html" class="cart-icon-btn" aria-label="Cart">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-nav-badge" id="cartNavBadge" style="display:none">0</span>
+                </a>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <button class="hamburger" id="hamburger">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="word">Local</span>
+                <span class="word">Brands.</span><br>
+                <span class="word dynamic-text">Maximum Drip.</span>
+            </h1>
+            <p class="hero-subtitle">The Nile's fashion destination for <span class="highlight">independent creators</span></p>
+            <div class="hero-cta">
+                <a href="HTML/shop.html" class="btn btn-primary btn-glow">Start Shopping</a>
+                <a href="HTML/seller-signup.html" class="btn btn-secondary btn-outline">Become a Seller</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="accent-blob accent-blob-1"></div>
+            <div class="accent-blob accent-blob-2"></div>
+            <div class="accent-blob accent-blob-3"></div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="categories-grid">
+                <a href="HTML/shop.html?category=hoodies" class="category-card" style="--color: #FF006E">
+                    <span class="category-name">Hoodies</span>
+                </a>
+                <a href="HTML/shop.html?category=tees" class="category-card" style="--color: #00D9FF">
+                    <span class="category-name">T-Shirts</span>
+                </a>
+                <a href="HTML/shop.html?category=sweatpants" class="category-card" style="--color: #FFB703">
+                    <span class="category-name">Sweatpants</span>
+                </a>
+                <a href="HTML/shop.html?category=accessories" class="category-card" style="--color: #8338EC">
+                    <span class="category-name">Accessories</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products">
+        <div class="container">
+            <h2 class="section-title">Hottest Drip Right Now</h2>
+            <div class="products-grid" id="featuredGrid">
+                <!-- JS Inject -->
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="HTML/shop.html" class="btn btn-secondary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="seller-cta" id="seller">
+      
+    </section>
+
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="newsletter-content">
+                    <h2>Join the Drip Club</h2>
+                    <p>Get early access to drops, exclusive discounts, and local brand stories.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" id="newsEmail">
+                        <button class="btn btn-primary" id="newsJoinBtn">Join Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About NileDrip</h4>
+                    <p>Supporting local Egyptian fashion brands with zero middleman</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="HTML/shop.html"><span class="link-icon">🛍️</span> Shop</a></li>
+                        <li><a href="HTML/seller-signup.html"><span class="link-icon">🚀</span> Become a Seller</a></li>
+                        <li><a href="HTML/login.html"><span class="link-icon">🔑</span> Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: hello@niledrip.com<br>Cairo, Egypt</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NileDrip. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="JS/store.js"></script>
+    <script src="JS/db.js"></script>
+    <script src="JS/utils.js"></script>
+    <script src="JS/theme.js"></script>
+    <script src="JS/main.js"></script>
+</body>
+</html>

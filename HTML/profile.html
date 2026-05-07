@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NileDrip | Profile</title>
+
+    <link rel="stylesheet" href="../CSS/style-base.css">
+
+    <style>
+        .profile-wrap {
+            max-width: 1100px;
+            margin: 110px auto 40px;
+            padding: 0 16px;
+        }
+
+        .profile-shell {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .greet {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .mail {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            word-break: break-word;
+        }
+
+        .menu-link {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .menu-link.active,
+        .menu-link:hover {
+            background: rgba(255, 0, 110, 0.1);
+            color: var(--primary-color);
+        }
+
+        .menu-divider {
+            margin: 12px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tab-section {
+            display: none;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        .order-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .chip-online {
+            background: #e8f0ff;
+            color: #1f5abf;
+        }
+
+        .chip-store {
+            background: #fff5e6;
+            color: #b26a00;
+        }
+
+        .chip-delivered {
+            background: #e8f9ed;
+            color: #227a38;
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 16px 0;
+        }
+
+        .muted {
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            width: 100%;
+        }
+
+        .info-box {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 14px;
+        }
+
+        .form-row {
+            margin-bottom: 14px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-row input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 900px) {
+            .profile-shell {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="../index.html" class="logo">
+                NILE<span class="drip">DRIP</span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+        </div>
+
+        <div class="navbar-actions">
+            <a href="wishlist.html" class="cart-icon-btn" aria-label="Wishlist">♡</a>
+            <a href="cart.html" class="cart-icon-btn" aria-label="Cart">🛒</a>
+
+            <button class="hamburger" id="hamburger" type="button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="profile-wrap">
+    <div class="profile-shell">
+
+        <aside class="panel">
+            <h1 class="greet" id="greetText">Hi Mohamed</h1>
+            <p class="mail" id="mailText">moh.tarek.arafa@gmail.com</p>
+
+            <button class="menu-link active" type="button" data-tab="purchases">My purchases</button>
+            <button class="menu-link" type="button" data-tab="returns">Returns</button>
+            <button class="menu-link" type="button" data-tab="details">Personal details</button>
+            <button class="menu-link" type="button" data-tab="addresses">Saved addresses</button>
+
+            <div class="menu-divider"></div>
+
+            <button id="logoutBtn" class="btn btn-secondary logout-btn" type="button">
+                Log out
+            </button>
+        </aside>
+
+        <main class="panel">
+
+            <section id="purchases" class="tab-section active">
+                <h2>My purchases</h2>
+
+                <div class="order-head">
+                    <span class="chip chip-online">Online</span>
+                    <span class="chip chip-store">Store</span>
+                    <span class="chip chip-delivered">Delivered</span>
+                </div>
+
+                <p>This order has 2 deliveries</p>
+                <p class="muted">You received it on 20/07/25</p>
+                <p class="price">EGP 6,170</p>
+
+                <hr style="border:0;border-top:1px solid var(--border-color);margin:18px 0;">
+
+                <h3>Did you shop as a guest?</h3>
+                <p class="muted">
+                    If you can't find your purchase, it may be because you ordered without registering.
+                </p>
+
+                <a href="shop.html" class="btn btn-primary">
+                    Find order page
+                </a>
+            </section>
+
+            <section id="returns" class="tab-section">
+                <h2>Returns</h2>
+
+                <div class="info-box">
+                    <h3>No active returns</h3>
+                    <p class="muted">
+                        You do not have any return requests right now.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>Return policy</h3>
+                    <p class="muted">
+                        Items can be returned within 14 days if they are unused and in original condition.
+                    </p>
+                </div>
+            </section>
+
+            <section id="details" class="tab-section">
+                <h2>Personal details</h2>
+
+                <div class="form-row">
+                    <label for="firstNameInput">First name</label>
+                    <input type="text" id="firstNameInput" placeholder="First name">
+                </div>
+
+                <div class="form-row">
+                    <label for="lastNameInput">Last name</label>
+                    <input type="text" id="lastNameInput" placeholder="Last name">
+                </div>
+
+                <div class="form-row">
+                    <label for="emailInput">Email</label>
+                    <input type="email" id="emailInput" placeholder="Email">
+                </div>
+
+                <button class="btn btn-primary" id="saveDetailsBtn" type="button">
+                    Save details
+                </button>
+            </section>
+
+            <section id="addresses" class="tab-section">
+                <h2>Saved addresses</h2>
+
+                <div class="info-box">
+                    <h3>Home address</h3>
+                    <p class="muted" id="addressText">No saved address yet.</p>
+                </div>
+
+                <div class="form-row" style="margin-top:16px;">
+                    <label for="addressInput">Add / Edit address</label>
+                    <input type="text" id="addressInput" placeholder="Example: Cairo, Egypt">
+                </div>
+
+                <button class="btn btn-primary" id="saveAddressBtn" type="button">
+                    Save address
+                </button>
+            </section>
+
+        </main>
+
+    </div>
+</div>
+
+<script src="../JS/store.js"></script>
+<script src="../JS/theme.js"></script>
+<script src="../JS/main.js"></script>
+<script src="../JS/profile.js"></script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NileDrip | Profile</title>
+
+    <link rel="stylesheet" href="../CSS/style-base.css">
+
+    <style>
+        .profile-wrap {
+            max-width: 1100px;
+            margin: 110px auto 40px;
+            padding: 0 16px;
+        }
+
+        .profile-shell {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .greet {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .mail {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            word-break: break-word;
+        }
+
+        .menu-link {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .menu-link.active,
+        .menu-link:hover {
+            background: rgba(255, 0, 110, 0.1);
+            color: var(--primary-color);
+        }
+
+        .menu-divider {
+            margin: 12px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .tab-section {
+            display: none;
+        }
+
+        .tab-section.active {
+            display: block;
+        }
+
+        .order-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .chip-online {
+            background: #e8f0ff;
+            color: #1f5abf;
+        }
+
+        .chip-store {
+            background: #fff5e6;
+            color: #b26a00;
+        }
+
+        .chip-delivered {
+            background: #e8f9ed;
+            color: #227a38;
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 16px 0;
+        }
+
+        .muted {
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            width: 100%;
+        }
+
+        .info-box {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 14px;
+        }
+
+        .form-row {
+            margin-bottom: 14px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-row input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 900px) {
+            .profile-shell {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="../index.html" class="logo">
+                NILE<span class="drip">DRIP</span>
+            </a>
+        </div>
+
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="shop.html" class="nav-link">Shop</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+        </div>
+
+        <div class="navbar-actions">
+            <a href="wishlist.html" class="cart-icon-btn" aria-label="Wishlist">♡</a>
+            <a href="cart.html" class="cart-icon-btn" aria-label="Cart">🛒</a>
+
+            <button class="hamburger" id="hamburger" type="button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="profile-wrap">
+    <div class="profile-shell">
+
+        <aside class="panel">
+            <h1 class="greet" id="greetText">Hi Mohamed</h1>
+            <p class="mail" id="mailText">moh.tarek.arafa@gmail.com</p>
+
+            <button class="menu-link active" type="button" data-tab="purchases">My purchases</button>
+            <button class="menu-link" type="button" data-tab="returns">Returns</button>
+            <button class="menu-link" type="button" data-tab="details">Personal details</button>
+            <button class="menu-link" type="button" data-tab="addresses">Saved addresses</button>
+
+            <div class="menu-divider"></div>
+
+            <button id="logoutBtn" class="btn btn-secondary logout-btn" type="button">
+                Log out
+            </button>
+        </aside>
+
+        <main class="panel">
+
+            <section id="purchases" class="tab-section active">
+                <h2>My purchases</h2>
+
+                <div class="order-head">
+                    <span class="chip chip-online">Online</span>
+                    <span class="chip chip-store">Store</span>
+                    <span class="chip chip-delivered">Delivered</span>
+                </div>
+
+                <p>This order has 2 deliveries</p>
+                <p class="muted">You received it on 20/07/25</p>
+                <p class="price">EGP 6,170</p>
+
+                <hr style="border:0;border-top:1px solid var(--border-color);margin:18px 0;">
+
+                <h3>Did you shop as a guest?</h3>
+                <p class="muted">
+                    If you can't find your purchase, it may be because you ordered without registering.
+                </p>
+
+                <a href="shop.html" class="btn btn-primary">
+                    Find order page
+                </a>
+            </section>
+
+            <section id="returns" class="tab-section">
+                <h2>Returns</h2>
+
+                <div class="info-box">
+                    <h3>No active returns</h3>
+                    <p class="muted">
+                        You do not have any return requests right now.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h3>Return policy</h3>
+                    <p class="muted">
+                        Items can be returned within 14 days if they are unused and in original condition.
+                    </p>
+                </div>
+            </section>
+
+            <section id="details" class="tab-section">
+                <h2>Personal details</h2>
+
+                <div class="form-row">
+                    <label for="firstNameInput">First name</label>
+                    <input type="text" id="firstNameInput" placeholder="First name">
+                </div>
+
+                <div class="form-row">
+                    <label for="lastNameInput">Last name</label>
+                    <input type="text" id="lastNameInput" placeholder="Last name">
+                </div>
+
+                <div class="form-row">
+                    <label for="emailInput">Email</label>
+                    <input type="email" id="emailInput" placeholder="Email">
+                </div>
+
+                <button class="btn btn-primary" id="saveDetailsBtn" type="button">
+                    Save details
+                </button>
+            </section>
+
+            <section id="addresses" class="tab-section">
+                <h2>Saved addresses</h2>
+
+                <div class="info-box">
+                    <h3>Home address</h3>
+                    <p class="muted" id="addressText">No saved address yet.</p>
+                </div>
+
+                <div class="form-row" style="margin-top:16px;">
+                    <label for="addressInput">Add / Edit address</label>
+                    <input type="text" id="addressInput" placeholder="Example: Cairo, Egypt">
+                </div>
+
+                <button class="btn btn-primary" id="saveAddressBtn" type="button">
+                    Save address
+                </button>
+            </section>
+
+        </main>
+
+    </div>
+</div>
+
+<script src="../JS/store.js"></script>
+<script src="../JS/theme.js"></script>
+<script src="../JS/main.js"></script>
+<script src="../JS/profile.js"></script>
+
+</body>
+</html>
