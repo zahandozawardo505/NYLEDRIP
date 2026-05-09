@@ -4,13 +4,13 @@
     const themeToggle = document.getElementById('themeToggle');
 
     // ── THEME LOGIC ────────────────────────────────────────────────────────
-    const savedTheme = localStorage.getItem('niledrip_theme') || 'light';
+    const savedTheme = localStorage.getItem('nyledrip_theme') || 'light';
     body.setAttribute('data-theme', savedTheme);
 
     function updateLogo() {
         const logo = document.querySelector('.logo');
         if (!logo) return;
-        logo.innerHTML = `<span class="nile">NILE</span><span class="drip">DRIP</span>`;
+        logo.innerHTML = `N<span class="nyle-y">Y</span>LE<span class="drip">DRIP</span>`;
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -23,7 +23,7 @@
             const current = body.getAttribute('data-theme');
             const next = current === 'dark' ? 'light' : 'dark';
             body.setAttribute('data-theme', next);
-            localStorage.setItem('niledrip_theme', next);
+            localStorage.setItem('nyledrip_theme', next);
         });
     }
 
@@ -32,7 +32,7 @@
         const badge = document.getElementById('cartNavBadge');
         if (!badge) return;
         try {
-            const cart = JSON.parse(localStorage.getItem('niledrip_cart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('nyledrip_cart') || '[]');
             const total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
             badge.textContent = total;
             badge.style.display = total > 0 ? 'flex' : 'none';
