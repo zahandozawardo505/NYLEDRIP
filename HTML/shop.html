@@ -8,188 +8,153 @@
     <link rel="stylesheet" href="../CSS/style-shop.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <a href="../index.html" class="logo">
-                    NILE<span class="drip">DRIP</span>
-                </a>
-            </div>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="shop.html" class="nav-link active">Shop</a>
-                <a href="login.html" class="nav-link">Login</a>
-                <a href="signup.html" class="nav-link">Sign Up</a>
-            </div>
-
-            <div class="navbar-actions">
-                <a href="wishlist.html" class="cart-icon-btn wishlist-icon-btn" aria-label="Wishlist">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                </a>
-
-                <a href="cart.html" class="cart-icon-btn" aria-label="Cart">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-nav-badge" id="cartNavBadge" style="display:none">0</span>
-                </a>
-
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-                <button class="hamburger" id="hamburger">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-brand"><a href="../index.html" class="logo">NILE<span class="drip">DRIP</span></a></div>
+        <div class="navbar-menu" id="navbarMenu">
+            <a href="shop.html" class="nav-link active">Shop</a>
+            <a href="login.html" class="nav-link">Login</a>
+            <a href="signup.html" class="nav-link">Sign Up</a>
         </div>
-    </nav>
-
-    <section class="shop-header">
-        <div class="container">
-            <h1>Explore Local Drip</h1>
-            <p>Handpicked collections from Egyptian brands</p>
-        </div>
-    </section>
-
-    <section class="shop-section">
-        <div class="container">
-            <div class="shop-layout">
-                <aside class="shop-sidebar">
-                    <h3 class="filter-title">Filters</h3>
-
-                    <div class="filter-group">
-                        <h4>Category</h4>
-                        <div class="filter-options">
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="hoodies" class="category-filter">
-                                <span>Hoodies</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="tees" class="category-filter">
-                                <span>T-Shirts</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="sweatpants" class="category-filter">
-                                <span>Sweatpants</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="accessories" class="category-filter">
-                                <span>Accessories</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <h4>Brand</h4>
-                        <div class="filter-options">
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="brand1" class="brand-filter">
-                                <span>Raak Brand</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="brand2" class="brand-filter">
-                                <span>Kreative Co</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="brand3" class="brand-filter">
-                                <span>Urban Cairo</span>
-                            </label>
-                            <label class="filter-checkbox">
-                                <input type="checkbox" value="brand4" class="brand-filter">
-                                <span>Desert Threads</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <h4>Price Range</h4>
-                        <input type="range" min="0" max="1000" value="1000" id="priceRange">
-                        <p>EGP 0 – <span id="priceValue">1000</span></p>
-                    </div>
-
-                    <button class="btn btn-secondary btn-block" id="resetFilters">Reset Filters</button>
-                </aside>
-
-                <div class="shop-main">
-                    <div class="shop-controls">
-                        <select id="sortBy" class="sort-select">
-                            <option value="newest">Newest</option>
-                            <option value="popular">Most Popular</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                        </select>
-                        <button id="openCompareBtn" class="btn btn-secondary" disabled>Compare (0)</button>
-                        <p class="product-count"><span id="productCount">0</span> products</p>
-                    </div>
-
-                    <div class="products-grid" id="productsGrid"></div>
-
-                    <div class="no-products" id="noProducts" style="display:none;">
-                        <p>No products found. Try adjusting your filters.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About NileDrip</h4>
-                    <p>Supporting local Egyptian fashion brands with zero middleman</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="shop.html">Shop</a></li>
-                        <li><a href="seller-signup.html">Become a Seller</a></li>
-                        <li><a href="login.html">Login</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: hello@niledrip.com<br>Cairo, Egypt</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 NileDrip. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Compare Modal (FIXED) -->
-    <div id="compareModal" class="compare-modal" style="display:none;">
-        <div class="compare-modal-content">
-            <div class="compare-modal-head">
-                <h3>Compare Products</h3>
-                <button id="closeCompareModal" class="btn btn-secondary">Close</button>
-            </div>
-            <div id="compareTableWrap" style="margin-top:20px;"></div>
+        <div class="navbar-actions">
+            <input id="globalSearch" placeholder="Search products or sellers">
+            <div id="searchSuggestions" class="search-suggestions" style="display:none;"></div>
+            <a href="wishlist.html" class="cart-icon-btn wishlist-icon-btn" aria-label="Wishlist">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <span class="cart-nav-badge" id="wishlistNavBadge" style="display:none">0</span>
+            </a>
+            <a href="cart.html" class="cart-icon-btn" aria-label="Cart">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-nav-badge" id="cartNavBadge" style="display:none">0</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
         </div>
     </div>
+</nav>
+
+<section class="shop-section">
+    <div class="container">
+        <div class="shop-view-switch" id="shopViewSwitch">
+            <button class="shop-view-btn active" type="button" data-view="products">Shop Products</button>
+            <button class="shop-view-btn" type="button" data-view="reels">Reels & TikTok</button>
+        </div>
+        <div class="shop-filter-bar">
+            <button class="btn btn-secondary" id="filterDrawerToggle" type="button">Filters & Sort</button>
+            <p class="product-count"><span id="productCount">0</span> products</p>
+        </div>
+        <section id="filterDrawerPanel" class="shop-filter-panel" style="display:none;">
+            <div class="filter-head"><h3>Filters</h3><p>Narrow your results</p></div>
+            <div class="filter-group"><h4>Sort By</h4>
+                <select id="sortBy" class="sort-select">
+                    <option value="newest">Newest</option>
+                    <option value="rating-high">Top rated</option>
+                    <option value="price-low">Price low</option>
+                    <option value="price-high">Price high</option>
+                </select>
+            </div>
+            <div class="filter-grid">
+                <div class="filter-group"><h4>Gender</h4><div class="filter-options">
+                    <label class="filter-checkbox"><input type="checkbox" class="gender-filter" value="Men"><span>Men</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="gender-filter" value="Women"><span>Women</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="gender-filter" value="Unisex"><span>Unisex</span></label>
+                </div></div>
+                <div class="filter-group"><h4>Category</h4><div class="filter-options">
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Tops"><span>Tops</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Bottoms"><span>Bottoms</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Hoodies & Sweatshirts"><span>Hoodies & Sweatshirts</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Jackets"><span>Jackets</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Shoes"><span>Shoes</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="category-filter" value="Accessories"><span>Accessories</span></label>
+                </div></div>
+                <div class="filter-group"><h4>Subcategory</h4><div class="filter-options">
+                    <label class="filter-checkbox"><input type="checkbox" class="subcategory-filter" value="Pants"><span>Pants / Trousers Group</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="subcategory-filter" value="T-Shirts"><span>T-Shirts</span></label>
+                    <label class="filter-checkbox"><input type="checkbox" class="subcategory-filter" value="Hoodies"><span>Hoodies</span></label>
+                </div></div>
+                <div class="filter-group"><h4>Availability</h4><div class="filter-options">
+                    <label class="filter-checkbox"><input type="checkbox" id="availableOnly"><span>In stock only</span></label>
+                </div></div>
+                <div class="filter-group"><h4>Seller</h4><div class="filter-options" id="sellerFilters"></div></div>
+                <div class="filter-group"><h4>Size</h4><div class="filter-options" id="sizeFilters"></div></div>
+                <div class="filter-group"><h4>Color</h4><div class="filter-options" id="colorFilters"></div></div>
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <div class="price-range-dual">
+                        <input type="range" min="0" max="100000" value="0" id="priceMinRange">
+                        <input type="range" min="0" max="100000" value="100000" id="priceMaxRange">
+                    </div>
+                    <p class="price-caption">EGP <span id="priceMinValue">0</span> - <span id="priceMaxValue">Max</span></p>
+                </div>
+            </div>
+            <button class="btn btn-secondary" id="resetFilters">Reset Filters</button>
+        </section>
+
+        <div class="shop-layout" id="shopLayout">
+            <div class="shop-main">
+                <section id="productsView" class="shop-view-panel active">
+                    <div class="shop-controls">
+                        <p class="product-count"><span id="productCountInline">Browse products</span></p>
+                    </div>
+                    <div id="productsGrid" class="products-grid"></div>
+                    <div id="noProducts" style="display:none">No products found.</div>
+                    <div id="shopPagination" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;"></div>
+                </section>
+
+                <section id="reelsView" class="shop-view-panel">
+                    <section id="shopReelsSection" class="seller-reels-section shop-reels-section">
+                        <div class="seller-reels-head">
+                            <h2>Reels & TikTok</h2>
+                            <p>Swipe through videos and shop featured products.</p>
+                        </div>
+                        <div class="reels-platform-switch" id="reelsPlatformSwitch">
+                            <button type="button" class="reels-platform-btn active" data-platform="all">All</button>
+                            <button type="button" class="reels-platform-btn" data-platform="instagram">Instagram</button>
+                            <button type="button" class="reels-platform-btn" data-platform="tiktok">TikTok</button>
+                        </div>
+                        <div id="shopReelsFeed" class="reels-feed reels-feed-grid"></div>
+                        <p id="shopReelsEmpty" class="reels-empty" style="display:none;">No reels available right now.</p>
+                    </section>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="reelFullscreenModal" class="reel-fullscreen-modal" style="display:none;" aria-hidden="true">
+    <div class="reel-fullscreen-backdrop" data-close-reel-modal="1"></div>
+    <div class="reel-fullscreen-dialog">
+        <button class="btn btn-secondary reel-fullscreen-close" id="reelFullscreenCloseBtn" type="button">Close</button>
+        <div class="reel-fullscreen-frame-wrap" id="reelFullscreenFrameWrap"></div>
+    </div>
+</div>
+<div id="quickViewModal" class="quick-view-modal" aria-hidden="true" style="display:none;">
+    <div class="quick-view-backdrop" data-close-quick-view="1"></div>
+    <div class="quick-view-dialog">
+        <button type="button" class="btn btn-secondary quick-view-close" id="quickViewCloseBtn">Close</button>
+        <div class="quick-view-content" id="quickViewContent"></div>
+    </div>
+</div>
 
 <script src="../JS/store.js"></script>
 <script src="../JS/db.js"></script>
+<script src="../JS/i18n.js"></script>
+<script>window.NILEDRIP_API_BASE = window.NILEDRIP_API_BASE || "http://localhost:5000/api";</script>
+<script src="../JS/api.js"></script>
 <script src="../JS/utils.js"></script>
-<script src="../JS/products.js"></script>
-<script src="../JS/shop.js"></script>
 <script src="../JS/theme.js"></script>
 <script src="../JS/main.js"></script>
+<script src="../JS/shop.js"></script>
 </body>
 </html>
