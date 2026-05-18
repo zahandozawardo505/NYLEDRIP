@@ -1,229 +1,180 @@
-/* JS/utils.js */
-const validateEmail = email =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-const validatePassword = pass =>
-    pass.length >= 8;
-
+const validateEmail = email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const validatePassword = pass => String(pass || "").length >= 8;
+const escapeHTML = (value = "") => String(value)
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#039;");
+const escapeAttr = (value = "") => escapeHTML(value).replace(/`/g, "&#096;");
 const getPasswordStrength = pass => {
-    let s = 0;
-    if (pass.length >= 8) s++;
-    if (/[a-z]/.test(pass) && /[A-Z]/.test(pass)) s++;
-    if (/\d/.test(pass)) s++;
-    if (/[^A-Za-z0-9]/.test(pass)) s++;
-    return Math.max(1, s);
+  let s = 0;
+  if (String(pass).length >= 8) s++;
+  if (/[a-z]/.test(pass) && /[A-Z]/.test(pass)) s++;
+  if (/\d/.test(pass)) s++;
+  if (/[^A-Za-z0-9]/.test(pass)) s++;
+  return Math.max(1, s);
 };
-
-const showError = (el, msg) => {
-    if (!el) return;
-    el.textContent = msg;
-    el.classList.add('show');
-};
-
-const clearError = el => {
-    if (!el) return;
-    el.textContent = '';
-    el.classList.remove('show');
-};
+const showError = (el, msg) => { if (!el) return; el.textContent = msg; el.classList.add("show"); };
+const clearError = el => { if (!el) return; el.textContent = ""; el.classList.remove("show"); };
 
 const getAssetPath = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http') || path.startsWith('//')) return path;
-    const isInHTML = window.location.pathname.toLowerCase().includes('/html/');
-    const cleanPath = path.startsWith('../') ? path.substring(3) : path;
-    return isInHTML ? '../' + cleanPath : cleanPath;
+  if (!path) return "";
+  if (path.startsWith("http") || path.startsWith("//")) return path;
+  const isInHTML = window.location.pathname.toLowerCase().includes("/html/");
+  const clean = path.startsWith("../") ? path.slice(3) : path;
+  return isInHTML ? `../${clean}` : clean;
 };
 
 const getPagePath = (pageName) => {
-    const isInHTML = window.location.pathname.toLowerCase().includes('/html/');
-    if (pageName === 'index.html') {
-        return isInHTML ? '../index.html' : 'index.html';
-    }
-    const [base, query] = pageName.split('?');
-    const path = isInHTML ? base : 'HTML/' + base;
-    return query ? `${path}?${query}` : path;
+  const isInHTML = window.location.pathname.toLowerCase().includes("/html/");
+  const [base, query] = pageName.split("?");
+  const path = isInHTML ? base : `HTML/${base}`;
+  return query ? `${path}?${query}` : path;
 };
 
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-EG', {
-        style: 'currency',
-        currency: 'EGP',
-        minimumFractionDigits: 0
-    }).format(amount).replace('EGP', '').trim() + ' EGP';
+const formatCurrency = amount =>
+  `${new Intl.NumberFormat("en-EG", { style: "currency", currency: "EGP", minimumFractionDigits: 0 }).format(amount).replace("EGP", "").trim()} EGP`;
+
+const showToast = (message, type = "info", timeout = 3600) => {
+  const text = String(message || "").trim();
+  if (!text) return;
+  let host = document.getElementById("toastHost");
+  if (!host) {
+    host = document.createElement("div");
+    host.id = "toastHost";
+    host.className = "toast-host";
+    host.setAttribute("aria-live", "polite");
+    host.setAttribute("aria-relevant", "additions");
+    document.body.appendChild(host);
+  }
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${type}`;
+  toast.setAttribute("role", type === "error" ? "alert" : "status");
+  toast.textContent = text;
+  host.appendChild(toast);
+  window.setTimeout(() => {
+    toast.classList.add("toast-leaving");
+    window.setTimeout(() => toast.remove(), 220);
+  }, timeout);
 };
 
-// --- Premium Notifications ---
-const showToast = (message, type = 'success') => {
-    let container = document.getElementById('toastContainer');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toastContainer';
-        container.style.cssText = 'position:fixed; top:20px; right:20px; z-index:9999; display:flex; flex-direction:column; gap:10px;';
-        document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    toast.className = `reveal active`;
-    const bgColor = type === 'success' ? 'var(--primary-color)' : '#ef4444';
-    toast.style.cssText = `background:${bgColor}; color:white; padding:16px 24px; border-radius:12px; font-weight:700; box-shadow:var(--shadow-lg); min-width:200px; display:flex; align-items:center; gap:12px; transition:all 0.4s var(--transition-base);`;
-    
-    const icon = type === 'success' ? '✨' : '⚠️';
-    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
-    
-    container.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateX(20px)';
-        setTimeout(() => toast.remove(), 400);
-    }, 3000);
+const updateNavbarBadges = () => {
+  const cart = (typeof DB !== "undefined" && DB.getCart) ? DB.getCart() : [];
+  const wishlist = (typeof DB !== "undefined" && DB.getWishlist) ? DB.getWishlist() : [];
+  const cartCount = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  const wishlistCount = wishlist.length;
+  const cartBadge = document.getElementById("cartNavBadge");
+  const wishlistBadge = document.getElementById("wishlistNavBadge");
+  if (cartBadge) { cartBadge.textContent = String(cartCount); cartBadge.style.display = cartCount > 0 ? "inline-flex" : "none"; }
+  if (wishlistBadge) { wishlistBadge.textContent = String(wishlistCount); wishlistBadge.style.display = wishlistCount > 0 ? "inline-flex" : "none"; }
 };
 
-// --- Premium Features ---
-
-const initPremiumFeatures = () => {
-    // 0. Inject Global UI Elements
-    if (!document.getElementById('aiScoutTrigger')) {
-        const scoutHTML = `
-            <div id="aiScoutTrigger" class="ai-scout-trigger" aria-label="Open AI Stylist">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-            </div>
-            <div id="aiScoutPanel" class="ai-scout-panel">
-                <div class="ai-scout-header">
-                    <h3 style="font-size:16px;">Drip Scout AI</h3>
-                    <button id="closeAiScout" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
-                </div>
-                <div class="ai-scout-messages" id="aiMessages">
-                    <div class="ai-message bot">Yo! I'm your Drip Scout. Ready to find your next level drip?</div>
-                </div>
-                <div class="ai-scout-input">
-                    <input type="text" id="aiInput" placeholder="Ask about the drip...">
-                    <button class="btn btn-primary btn-small" id="sendAiMessage" style="padding: 8px 12px;">Send</button>
-                </div>
-            </div>
-            <div id="quickViewPortal" class="ar-modal">
-                <div id="portalBody" class="container" style="background: var(--bg-primary); padding: 50px; border-radius: 24px; max-width: 900px; position: relative; border: 1px solid var(--border-color);"></div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', scoutHTML);
+const updateNavbarAuth = () => {
+  const menu = document.getElementById("navbarMenu");
+  if (!menu || typeof DB === "undefined" || !DB.getCurrentUser) return;
+  const currentUser = DB.getCurrentUser();
+  const login = menu.querySelector('a[href*="login.html"]');
+  const signup = menu.querySelector('a[href*="signup.html"]');
+  const profileHref = getPagePath("profile.html");
+  const sellerHref = getPagePath("seller-dashboard.html");
+  const loginHref = getPagePath("login.html");
+  if (currentUser) {
+    if (currentUser.role === "seller") {
+      if (login) login.outerHTML = `<a href="${sellerHref}" class="nav-link">Dashboard</a>`;
+      if (signup) signup.outerHTML = '<a href="#" id="navLogoutLink" class="nav-link">Logout</a>';
+    } else {
+      if (login) login.outerHTML = `<a href="${profileHref}" class="nav-link">Profile</a>`;
+      if (signup) signup.outerHTML = '<a href="#" id="navLogoutLink" class="nav-link">Logout</a>';
     }
-
-    // 1. Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('active');
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('section, .product-card, .category-card').forEach(el => {
-        el.classList.add('reveal');
-        observer.observe(el);
+    document.getElementById("navLogoutLink")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      DB.logout();
+      if (typeof Api !== "undefined") Api.setToken("");
+      window.location.href = loginHref;
     });
+  }
+};
 
-    // 2. AI Scout Toggle
-    const scoutTrigger = document.getElementById('aiScoutTrigger');
-    const scoutPanel = document.getElementById('aiScoutPanel');
-    if (scoutTrigger) {
-        scoutTrigger.onclick = () => scoutPanel.classList.toggle('active');
-        document.getElementById('closeAiScout').onclick = () => scoutPanel.classList.remove('active');
-        
-        const aiInput = document.getElementById('aiInput');
-        const sendBtn = document.getElementById('sendAiMessage');
-        const aiMessages = document.getElementById('aiMessages');
+const initPremiumFeatures = () => {};
 
-        const sendMessage = () => {
-            const text = aiInput.value.trim();
-            if (!text) return;
-            const msg = document.createElement('div');
-            msg.className = 'ai-message user';
-            msg.textContent = text;
-            aiMessages.appendChild(msg);
-            aiInput.value = '';
+document.addEventListener("error", (event) => {
+  const target = event.target;
+  if (!target || target.tagName !== "IMG" || target.dataset.fallbackApplied === "true") return;
+  target.dataset.fallbackApplied = "true";
+  target.alt = target.alt || "Product image unavailable";
+  target.src = getAssetPath("assets/images/bmw.webp");
+}, true);
 
-            const getAiResponse = (query) => {
-                const q = query.toLowerCase();
-                if (q.includes('hoodie')) return "Our Heavyweight Boxy Hoodies are currently the top choice for streetwear fans.";
-                if (q.includes('shirt') || q.includes('tee')) return "Check our 'Drip Essentials' tees—lightweight and perfect for Cairo heat.";
-                if (q.includes('price') || q.includes('cheap')) return "Quality doesn't always break the bank. Pieces start at just 350 EGP!";
-                if (q.includes('sale') || q.includes('discount')) return "Use code NILE10 at checkout for a nice little surprise!";
-                return "That's a vibe. We've got some new independent labels in the shop that match that energy perfectly.";
-            };
+const requireSignedInUser = (message = "You have to sign in first.") => {
+  if (typeof DB === "undefined" || !DB.getCurrentUser) return false;
+  const currentUser = DB.getCurrentUser();
+  const hasToken = typeof Api !== "undefined" ? Boolean(Api.token()) : true;
+  if (currentUser && hasToken) return true;
+  showToast(message, "error");
+  window.location.href = getPagePath("login.html");
+  return false;
+};
 
-            setTimeout(() => {
-                const bot = document.createElement('div');
-                bot.className = 'ai-message bot';
-                bot.textContent = getAiResponse(text);
-                aiMessages.appendChild(bot);
-                aiMessages.scrollTop = aiMessages.scrollHeight;
-            }, 600);
-        };
-        sendBtn.onclick = sendMessage;
-        aiInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-    }
+const requireRole = (roles, message = "You do not have permission to access this page.") => {
+  if (typeof DB === "undefined" || !DB.getCurrentUser) return false;
+  const allowed = Array.isArray(roles) ? roles : [roles];
+  const currentUser = DB.getCurrentUser();
+  const hasToken = typeof Api !== "undefined" ? Boolean(Api.token()) : true;
+  if (currentUser && hasToken && allowed.includes(currentUser.role)) return true;
+  showToast(message, "error");
+  window.location.href = getPagePath(currentUser ? "shop.html" : "login.html");
+  return false;
+};
 
-    // 3. Unified Global Search
-    const initGlobalSearch = async () => {
-        const navContainer = document.querySelector('.navbar .container');
-        if (!navContainer || document.getElementById('globalSearch')) return;
+const getReelEmbedInfo = (reelUrl, platformHint = "") => {
+  const raw = String(reelUrl || "").trim();
+  if (!raw) return { error: "Reel URL is required." };
+  let parsed;
+  try {
+    parsed = new URL(raw);
+  } catch (_) {
+    return { error: "Reel URL is not valid." };
+  }
+  if (!/^https?:$/i.test(parsed.protocol)) return { error: "Reel URL must start with http:// or https://." };
 
-        const searchDiv = document.createElement('div');
-        searchDiv.className = 'navbar-search';
-        searchDiv.innerHTML = `
-            <div class="search-wrapper">
-                <input type="text" id="globalSearch" placeholder="Search the drip...">
-                <button id="navImageSearch" class="search-img-btn" title="Visual Search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                </button>
-            </div>
-            <div id="searchSuggestions" class="search-suggestions" style="position:absolute; top:105%; left:0; width:100%; background:var(--bg-primary); border:1px solid var(--border-color); border-radius:16px; display:none; z-index:1500; box-shadow:var(--shadow); overflow:hidden;"></div>
-        `;
+  const host = String(parsed.hostname || "").toLowerCase();
+  const pathname = String(parsed.pathname || "");
+  let platform = String(platformHint || "").trim().toLowerCase();
+  if (!platform) {
+    if (host.includes("instagram.com")) platform = "instagram";
+    else if (host.includes("tiktok.com")) platform = "tiktok";
+  }
+  if (!["instagram", "tiktok"].includes(platform)) return { error: "Only Instagram and TikTok links are supported." };
 
-        const actions = document.querySelector('.navbar-actions');
-        if (actions) {
-            actions.insertBefore(searchDiv, actions.firstChild);
-        }
-
-        const products = Store.get('niledrip_products', []);
-        const searchInput = document.getElementById('globalSearch');
-        const vsBtn = document.getElementById('navImageSearch');
-        const suggestions = document.getElementById('searchSuggestions');
-
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        document.body.appendChild(fileInput);
-
-        vsBtn.onclick = () => fileInput.click();
-        fileInput.onchange = () => {
-            if (fileInput.files.length) {
-                alert("AI SCANNING DRIP...");
-                setTimeout(() => window.location.href = getPagePath('shop.html?visualMatch=true'), 1500);
-            }
-        };
-
-        searchInput.oninput = (e) => {
-            const q = e.target.value.toLowerCase().trim();
-            if (q.length < 2) { suggestions.style.display = 'none'; return; }
-            const matches = products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)).slice(0, 5);
-            if (matches.length) {
-                suggestions.innerHTML = matches.map(p => `
-                    <a href="${getPagePath('product.html?id=' + p.id)}" style="display:flex; align-items:center; gap:12px; padding:12px; text-decoration:none; color:inherit; border-bottom:1px solid var(--border-color);">
-                        <img src="${getAssetPath(p.image)}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                        <div><div style="font-weight:700; font-size:14px;">${p.name}</div><div style="font-size:12px; color:var(--primary-color); font-weight:800;">${formatCurrency(p.price)}</div></div>
-                    </a>`).join('');
-                suggestions.style.display = 'block';
-            } else suggestions.style.display = 'none';
-        };
-
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) suggestions.style.display = 'none';
-        });
+  if (platform === "instagram") {
+    if (!host.includes("instagram.com")) return { error: "Instagram reels must use instagram.com links." };
+    const match = pathname.match(/\/reel\/([A-Za-z0-9_-]+)/i);
+    if (!match) return { error: "Instagram URL must include /reel/{id}." };
+    const reelId = match[1];
+    const canonicalUrl = `https://www.instagram.com/reel/${reelId}/`;
+    return {
+      platform,
+      canonicalUrl,
+      externalUrl: canonicalUrl,
+      embedUrl: `${canonicalUrl}embed`,
+      reelId
     };
-    initGlobalSearch();
+  }
+
+  if (!host.includes("tiktok.com")) return { error: "TikTok reels must use tiktok.com links." };
+  const idMatch = pathname.match(/\/video\/(\d+)/i);
+  if (!idMatch) return { error: "TikTok URL must include /video/{id}." };
+  const reelId = idMatch[1];
+  const userMatch = pathname.match(/^\/@([^/]+)\/video\/\d+/i);
+  const canonicalUrl = userMatch
+    ? `https://www.tiktok.com/@${userMatch[1]}/video/${reelId}`
+    : `https://www.tiktok.com/video/${reelId}`;
+  return {
+    platform,
+    canonicalUrl,
+    externalUrl: canonicalUrl,
+    embedUrl: `https://www.tiktok.com/embed/v2/${reelId}`,
+    reelId
+  };
 };
