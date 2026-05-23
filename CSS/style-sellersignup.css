@@ -166,43 +166,98 @@
 }
 
 .seller-benefits {
-    background: var(--bg-secondary);
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     padding: var(--spacing-xl);
     border-radius: 24px;
     height: fit-content;
     position: sticky;
     top: 100px;
     border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
 }
 
 .seller-benefits h3 {
-    font-size: 22px;
+    font-size: clamp(24px, 2.2vw, 28px);
     font-weight: 800;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 10px;
     letter-spacing: -1px;
+    line-height: 1.15;
+}
+
+.benefits-lead {
+    margin: 0 0 var(--spacing-lg);
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .benefit-item {
     display: flex;
-    gap: 16px;
-    margin-bottom: var(--spacing-lg);
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 14px;
+    transition: var(--transition-fast);
+}
+
+.benefit-item:last-child {
+    margin-bottom: 0;
+}
+
+.benefit-item:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
 .benefit-icon {
-    font-size: 28px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    color: var(--primary-color);
+    background: rgba(255, 51, 102, 0.1);
+    border: 1px solid rgba(255, 51, 102, 0.25);
     flex-shrink: 0;
 }
 
+.benefit-icon::after {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+}
+
+.seller-benefits .benefit-item:nth-of-type(1) .benefit-icon::after { content: "AN"; }
+.seller-benefits .benefit-item:nth-of-type(2) .benefit-icon::after { content: "95%"; }
+.seller-benefits .benefit-item:nth-of-type(3) .benefit-icon::after { content: "EG"; }
+.seller-benefits .benefit-item:nth-of-type(4) .benefit-icon::after { content: "DB"; }
+
 .benefit-item h4 {
     font-weight: 700;
-    font-size: 16px;
-    margin-bottom: 4px;
+    font-size: 15px;
+    margin-bottom: 6px;
+    line-height: 1.2;
 }
 
 .benefit-item p {
+    margin: 0;
     font-size: 13px;
     color: var(--text-secondary);
-    line-height: 1.5;
+    line-height: 1.55;
+}
+
+@media (max-width: 1024px) {
+    .seller-benefits {
+        position: static;
+        margin-top: 6px;
+    }
 }
 
 @keyframes fadeInUp {
@@ -282,9 +337,10 @@
 }
 
 .checkbox-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    align-items: start;
+    column-gap: 14px;
     background: var(--bg-secondary);
     padding: 20px;
     border-radius: 20px;
@@ -304,11 +360,12 @@
     width: 22px;
     height: 22px;
     accent-color: var(--primary-color);
-    margin-top: 2px;
+    margin: 2px 0 0;
     cursor: pointer;
 }
 
 .checkbox-card label {
+    margin: 0;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.5;
@@ -316,6 +373,15 @@
     cursor: pointer;
     text-transform: none; /* Reset uppercase if any */
     letter-spacing: normal;
+}
+
+@media (max-width: 480px) {
+    .checkbox-card {
+        grid-template-columns: 20px 1fr;
+        column-gap: 10px;
+        padding: 16px;
+        border-radius: 14px;
+    }
 }
 
 .verification-info {

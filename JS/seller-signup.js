@@ -69,10 +69,14 @@
             const email = document.getElementById('sellerEmail').value.trim();
             const license = document.getElementById('businessLicense').value;
             const bank = document.getElementById('bankAccount').value.trim();
+            const pass = document.getElementById('sellerPassword').value;
+            const confirm = document.getElementById('confirmSellerPassword').value;
 
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push("Valid Email is required.");
             if (!license) errors.push("Please upload your Business License or ID.");
             if (bank.length < 8) errors.push("Enter a valid Bank Account number.");
+            if (!pass || pass.length < 8) errors.push("Password must be at least 8 characters.");
+            if (pass !== confirm) errors.push("Password confirmation does not match.");
         }
 
         if (step === 3) {
@@ -114,33 +118,61 @@
         }
     });
 
-    form?.addEventListener('submit', e => {
+    form?.addEventListener('submit', async e => {
         e.preventDefault();
         if (validateStep(currentStep)) {
-            // Save data logic
             const formData = new FormData(form);
-            const application = {
-                id: 'APP-' + Date.now(),
-                brandName: formData.get('brandName'),
-                brandDescription: formData.get('brandDescription'),
-                brandCategory: formData.get('brandCategory'),
-                ownerName: formData.get('ownerName'),
-                ownerPhone: formData.get('ownerPhone'),
-                sellerEmail: formData.get('sellerEmail'),
-                bankAccount: formData.get('bankAccount'),
-                appliedAt: new Date().toISOString(),
-                status: 'pending'
-            };
-
-            const apps = DB.applications;
-            apps.push(application);
-            DB.saveApplications(apps);
-
-            showPopUp("Success!", ["Application submitted! We'll review it in 24-48h."], true);
-            form.reset();
-            currentStep = 1;
-            updateStepUI(1);
+            const brandName = String(formData.get('brandName') || '').trim();
+            const sellerEmail = String(formData.get('email') || '').trim().toLowerCase();
+            const password = String(formData.get('sellerPassword') || '').trim();
+            const licenseFile = document.getElementById('businessLicense')?.files?.[0] || null;
+            try {
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Submitting...';
+                }
+                if (!licenseFile) throw new Error('Business license document is required.');
+                const allowedTypes = new Set(['application/pdf', 'image/jpeg', 'image/png', 'image/webp']);
+                if (!allowedTypes.has(licenseFile.type)) {
+                    throw new Error('Only PDF, JPG, PNG, and WEBP files are allowed.');
+                }
+                if (licenseFile.size > 5 * 1024 * 1024) {
+                    throw new Error('File is too large. Maximum size is 5MB.');
+                }
+                await Api.applySellerWithFile({
+                    brandName,
+                    brandDescription: String(formData.get('brandDescription') || ''),
+                    brandCategory: String(formData.get('brandCategory') || ''),
+                    ownerName: String(formData.get('ownerName') || ''),
+                    ownerPhone: String(formData.get('ownerPhone') || ''),
+                    sellerEmail,
+                    password,
+                    bankAccount: String(formData.get('bankAccount') || '')
+                }, licenseFile);
+                showPopUp("Success!", ["Application submitted with status: waiting. Admin review is required before login."], true);
+                form.reset();
+                currentStep = 1;
+                updateStepUI(1);
+            } catch (err) {
+                showPopUp("Error", [err.message || "Failed to create seller account"]);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                }
+            }
         }
+    });
+
+    document.querySelectorAll('[data-checkbox-card]').forEach(card => {
+        card.addEventListener('click', event => {
+            if (event.target.closest('a') || event.target.matches('input,label')) return;
+            const checkbox = document.getElementById(card.dataset.checkboxCard);
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
     });
 
     updateStepUI(1);
