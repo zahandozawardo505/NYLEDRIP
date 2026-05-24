@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NileDrip | Sign Up</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
     <!-- FIX: Backslashes replaced with forward slashes -->
     <link rel="stylesheet" href="../CSS/style-base.css">
     <link rel="stylesheet" href="../CSS/style-login-signup.css">
@@ -54,7 +55,7 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                     </svg>
                 </button>
-                <button class="hamburger" id="hamburger">
+                <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
                     <span></span><span></span><span></span>
                 </button>
             </div>
@@ -96,7 +97,7 @@
                         <div class="password-input-wrapper">
                             <input type="password" id="signupPassword" name="password"
                                    placeholder="At least 8 characters" required>
-                            <button type="button" class="toggle-password" id="toggleSignupPassword">👁️</button>
+                            <button type="button" class="toggle-password" id="toggleSignupPassword" aria-label="Show password" data-i18n-skip="true">Show</button>
                         </div>
                         <span class="error-message" id="signupPasswordError"></span>
                         <div class="password-strength">
@@ -108,13 +109,13 @@
                     <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>
                         <input type="password" id="confirmPassword" name="confirmPassword"
-                               placeholder="••••••••" required>
+                               placeholder="Repeat your password" required>
                         <span class="error-message" id="confirmPasswordError"></span>
                     </div>
 
                     <div class="form-group checkbox">
                         <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the <a href="#" class="auth-link">Terms & Conditions</a></label>
+                        <label for="terms"><span>I agree to the <a href="#" class="auth-link">Terms & Conditions</a></span></label>
                         <span class="error-message" id="termsError"></span>
                     </div>
 
@@ -138,8 +139,11 @@
     </section>
 
 <script src="../JS/store.js"></script>
+<script src="../JS/db.js"></script>
+<script src="../JS/i18n.js"></script>
+<script src="../JS/api.js"></script>
 <script src="../JS/utils.js"></script>
 <script src="../JS/signup.js"></script>
-<script src="../JS/theme.js"></script>
+<script src="../JS/theme.js"></script><script src="../JS/main.js"></script>
 </body>
 </html>

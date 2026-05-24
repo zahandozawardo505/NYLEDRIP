@@ -1,85 +1,40 @@
-// signup.js
-// FIX: Original code referenced bare variables `signupEmail`, `signupPassword`,
-// `confirmPassword` which are undefined — they must be fetched via getElementById.
-
-const signupForm = document.getElementById('signupForm');
-
+const signupForm = document.getElementById("signupForm");
 if (signupForm) {
-    const firstNameEl      = document.getElementById('firstName');
-    const lastNameEl       = document.getElementById('lastName');
-    const signupEmailEl    = document.getElementById('signupEmail');
-    const signupPasswordEl = document.getElementById('signupPassword');
-    const confirmPassEl    = document.getElementById('confirmPassword');
-    const emailError       = document.getElementById('signupEmailError');
-    const passwordError    = document.getElementById('signupPasswordError');
-    const confirmError     = document.getElementById('confirmPasswordError');
-    const strengthBar      = document.getElementById('strengthBar');
-    const strengthText     = document.getElementById('strengthText');
-    const toggleBtn        = document.getElementById('toggleSignupPassword');
-
-    // Password visibility toggle
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const type = signupPasswordEl.type === 'password' ? 'text' : 'password';
-            signupPasswordEl.type = type;
-            toggleBtn.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
-        });
-    }
-
-    // Password strength indicator
-    if (signupPasswordEl && strengthBar && strengthText) {
-        signupPasswordEl.addEventListener('input', () => {
-            const s = getPasswordStrength(signupPasswordEl.value);
-            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
-            const colors = ['', '#e74c3c', '#f39c12', '#3498db', '#2ecc71'];
-            strengthBar.style.width = (s * 25) + '%';
-            strengthBar.style.background = colors[s] || '#ccc';
-            strengthText.textContent = labels[s] || '';
-        });
-    }
-
-    signupForm.addEventListener('submit', e => {
+    signupForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-
-        let valid = true;
-
-        if (!validateEmail(signupEmailEl.value)) {
-            showError(emailError, 'Please enter a valid email address');
-            valid = false;
-        } else {
-            clearError(emailError);
+        const submitBtn = signupForm.querySelector('button[type="submit"]');
+        const firstName = document.getElementById("firstName")?.value.trim() || "";
+        const lastName = document.getElementById("lastName")?.value.trim() || "";
+        const email = document.getElementById("signupEmail")?.value.trim().toLowerCase() || "";
+        const password = document.getElementById("signupPassword")?.value || "";
+        const confirmPassword = document.getElementById("confirmPassword")?.value || "";
+        if (!validateEmail(email)) return showToast("Please enter a valid email.", "error");
+        if (!validatePassword(password)) return showToast("Password must be at least 8 characters.", "error");
+        if (password !== confirmPassword) return showToast("Passwords do not match.", "error");
+        try {
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Creating..."; }
+            const { token, user } = await Api.signup({ name: `${firstName} ${lastName}`.trim() || "User", email, password, role: "user" });
+            Api.setToken(token);
+            DB.setCurrentUser(user);
+            window.location.href = "shop.html";
+        } catch (err) {
+            showToast(err.message || "Signup failed.", "error");
+        } finally {
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Create Account"; }
         }
-
-        if (!validatePassword(signupPasswordEl.value)) {
-            showError(passwordError, 'Password must be at least 8 characters');
-            valid = false;
-        } else {
-            clearError(passwordError);
-        }
-
-        if (signupPasswordEl.value !== confirmPassEl.value) {
-            showError(confirmError, "Passwords don't match");
-            valid = false;
-        } else {
-            clearError(confirmError);
-        }
-
-        if (!valid) return;
-
-        const users = Store.get('niledrip_users', []);
-        const newUser = {
-            id: Date.now(),
-            firstName: (firstNameEl?.value || '').trim(),
-            lastName: (lastNameEl?.value || '').trim(),
-            email: signupEmailEl.value.trim().toLowerCase(),
-            password: signupPasswordEl.value
-        };
-        users.push(newUser);
-        Store.set('niledrip_users', users);
-        Store.set('niledrip_current_user', newUser);
-
-        alert('Account created!');
-        window.location.href = 'profile.html';
     });
 }
+
+
+
+function togglePasswordById(inputId, buttonId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(buttonId);
+    if (!input || !btn) return;
+    const isHidden = input.type === "password";
+    input.type = isHidden ? "text" : "password";
+    btn.textContent = isHidden ? "Hide" : "Show";
+    btn.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+}
+
+document.getElementById("toggleSignupPassword")?.addEventListener("click", () => togglePasswordById("signupPassword", "toggleSignupPassword"));
