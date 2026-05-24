@@ -1,275 +1,279 @@
-// cart.js
-
-const DEFAULT_COUPONS = [
-    { code: 'NILE10', discount: 10 },
-    { code: 'DRIP20', discount: 20 },
-    { code: 'WELCOME15', discount: 15 }
-];
-
-let activeDiscount = 0;
-let lastRemovedItem = null;
-let undoTimer = null;
-
-function getCart() {
-    return Store.get('niledrip_cart', []);
-}
-
-function saveCart(cart) {
-    Store.set('niledrip_cart', cart);
-}
-
-function getCoupons() {
-    const saved = Store.get('niledrip_coupons', []);
-    if (saved.length) return saved;
-    return DEFAULT_COUPONS;
-}
-
-function showUndoBar(message, removedItem) {
-    const bar = document.getElementById('undoRemoveBar');
-    const text = document.getElementById('undoRemoveText');
-    if (!bar || !text) return;
-    lastRemovedItem = removedItem;
-    text.textContent = message;
-    bar.style.display = 'flex';
-    if (undoTimer) clearTimeout(undoTimer);
-    undoTimer = setTimeout(() => {
-        bar.style.display = 'none';
-        lastRemovedItem = null;
-    }, 5000);
-}
-
-function hideUndoBar() {
-    const bar = document.getElementById('undoRemoveBar');
-    if (bar) bar.style.display = 'none';
-    if (undoTimer) clearTimeout(undoTimer);
-    lastRemovedItem = null;
-}
-
-function removeFromCart(id, size) {
-    const cart = getCart();
-    const removed = cart.find(i => i.id === id && i.size === size);
-    const next = cart.filter(i => !(i.id === id && i.size === size));
-    saveCart(next);
-    if (removed) showUndoBar(`${removed.name} removed`, removed);
-}
-
-function updateCartQuantity(id, size, delta) {
-    const cart = getCart();
-    const index = cart.findIndex(i => i.id === id && i.size === size);
-    if (index === -1) return;
-
-    const item = cart[index];
-    const nextQty = item.quantity + delta;
-
-    if (nextQty <= 0) {
-        cart.splice(index, 1);
-        saveCart(cart);
-        showUndoBar(`${item.name} removed`, item);
-        return;
-    }
-
-    item.quantity = nextQty;
-    saveCart(cart);
-}
-
-function openCheckoutModal() {
-    const modal = document.getElementById('checkoutModal');
-    if (!modal) return;
-    modal.classList.add('is-open');
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden', 'false');
-}
-
-function closeCheckoutModal() {
-    const modal = document.getElementById('checkoutModal');
-    if (!modal) return;
-    modal.classList.remove('is-open');
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden', 'true');
-}
-
-function updateDeliveryInfo(subtotal) {
-    const dateEl = document.getElementById('estimatedDelivery');
-    const progressBar = document.getElementById('shippingProgressBar');
-    const progressText = document.getElementById('shippingProgressText');
-    if (!dateEl || !progressBar || !progressText) return;
-
-    if (subtotal <= 0) {
-        dateEl.textContent = '-';
-        progressBar.style.width = '0%';
-        progressText.textContent = 'Add items to unlock free shipping';
-        return;
-    }
-
-    const etaDays = subtotal >= 1200 ? 2 : subtotal >= 700 ? 3 : 5;
-    const eta = new Date();
-    eta.setDate(eta.getDate() + etaDays);
-    dateEl.textContent = eta.toLocaleDateString();
-
-    const progress = Math.min(100, Math.round((subtotal / 1200) * 100));
-    progressBar.style.width = `${progress}%`;
-    progressText.textContent = progress >= 100
-        ? 'Free shipping unlocked'
-        : `Add ${1200 - subtotal} EGP more for free shipping`;
-}
-
-function renderCart() {
-    const cartItemsEl = document.getElementById('cartItems');
-    const cartEmpty = document.getElementById('cartEmpty');
-    const cartLayout = document.getElementById('cartLayout');
-
-    if (!cartItemsEl) return;
-
-    const cart = getCart();
-    if (cart.length === 0) {
-        if (cartEmpty) cartEmpty.style.display = 'block';
-        if (cartLayout) cartLayout.style.display = 'none';
-        updateDeliveryInfo(0);
-        return;
-    }
-
-    if (cartEmpty) cartEmpty.style.display = 'none';
-    if (cartLayout) cartLayout.style.display = '';
-
-    cartItemsEl.innerHTML = '';
-    cart.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-            <div class="cart-item-image">
-                <img src="${item.image || 'https://via.placeholder.com/120x120?text=No+Image'}"
-                     alt="${item.name}"
-                     onerror="this.src='https://via.placeholder.com/120x120?text=No+Image'">
-            </div>
-            <div class="cart-item-info">
-                <h3>${item.name}</h3>
-                <p>Size: ${item.size || '-'}</p>
-                <p><strong>${item.price} EGP</strong></p>
-            </div>
-            <div class="cart-item-controls">
-                <button class="qty-btn" data-id="${item.id}" data-size="${item.size}" data-delta="-1">-</button>
-                <span>${item.quantity}</span>
-                <button class="qty-btn" data-id="${item.id}" data-size="${item.size}" data-delta="1">+</button>
-            </div>
-            <button class="btn btn-danger btn-small remove-btn" data-id="${item.id}" data-size="${item.size}">
-                Remove
-            </button>
+(function () {
+    let lastTotal = 0;
+    let rateCache = {};
+    let promoState = { code: '', discountAmount: 0, sellerId: '' };
+    function getCart() { return DB.getCart(); }
+    function saveCart(cart) { DB.saveCart(cart); updateNavbarBadges(); }
+    function showOrderConfirmation(orderIds = []) {
+        const host = document.querySelector(".cart-section .container");
+        if (!host) return;
+        const ids = orderIds.map((id) => typeof escapeHTML === "function" ? escapeHTML(id) : String(id));
+        const wrap = document.createElement("div");
+        wrap.className = "cart-empty";
+        wrap.innerHTML = `
+            <h2>Order Confirmed</h2>
+            <p>Your order was placed successfully${ids.length ? ` (IDs: ${ids.join(", ")})` : ""}.</p>
+            <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
         `;
-        cartItemsEl.appendChild(div);
-    });
-
-    updateSummary();
-}
-
-function updateSummary() {
-    const cart = getCart();
-    const itemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
-    const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
-    const shipping = cart.length ? (subtotal >= 1200 ? 0 : 50) : 0;
-    const discount = Math.round((subtotal * activeDiscount) / 100);
-    const total = subtotal + shipping - discount;
-
-    const set = (id, val) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-    };
-
-    set('summaryItemCount', itemCount);
-    set('summarySubtotal', subtotal + ' EGP');
-    set('summaryTotal', total + ' EGP');
-
-    const promoDiv = document.getElementById('promoApplied');
-    const promoSpan = document.getElementById('promoDiscount');
-    if (promoDiv && promoSpan) {
-        promoDiv.style.display = activeDiscount ? 'block' : 'none';
-        promoSpan.textContent = discount + ' EGP';
+        host.prepend(wrap);
     }
-
-    updateDeliveryInfo(subtotal);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    closeCheckoutModal();
-    renderCart();
-    const noteEl = document.getElementById('cartNote');
-    if (noteEl) {
-        noteEl.value = localStorage.getItem('niledrip_cart_note') || '';
-        noteEl.addEventListener('input', () => {
-            localStorage.setItem('niledrip_cart_note', noteEl.value.trim());
-        });
+    function setCheckoutError(message = "") {
+        const el = document.getElementById("checkoutError");
+        if (!el) return;
+        el.textContent = message;
+        el.classList.toggle("show", Boolean(message));
     }
-});
-
-document.addEventListener('click', e => {
-    if (e.target.closest('#checkoutBtn')) {
-        const cart = getCart();
-        if (!cart.length) return alert('Your cart is empty!');
-        const orderIdEl = document.getElementById('modalOrderId');
-        if (orderIdEl) orderIdEl.textContent = 'ND-' + Date.now();
-        openCheckoutModal();
-        return;
+    function getShippingAddress() {
+        const fullName = String(document.getElementById("checkoutFullName")?.value || "").trim();
+        const phone = String(document.getElementById("checkoutPhone")?.value || "").trim();
+        const city = String(document.getElementById("checkoutCity")?.value || "").trim();
+        const line1 = String(document.getElementById("checkoutAddress")?.value || "").trim();
+        if (fullName.length < 3) throw new Error("Enter your full shipping name.");
+        if (!/^[0-9+\-\s]{8,18}$/.test(phone)) throw new Error("Enter a valid phone number.");
+        if (city.length < 2) throw new Error("Enter a valid city.");
+        if (line1.length < 8) throw new Error("Enter a complete street address.");
+        return { fullName, phone, city, line1, country: "Egypt", note: String(document.getElementById("cartNote")?.value || "").trim() };
     }
-
-    if (e.target.closest('#cancelCheckoutBtn') || e.target.id === 'checkoutModal') {
-        closeCheckoutModal();
-        return;
-    }
-
-    if (e.target.closest('#confirmOrderBtn')) {
-        saveCart([]);
-        localStorage.removeItem('niledrip_cart_note');
-        renderCart();
-        closeCheckoutModal();
-        hideUndoBar();
-        alert('Order successfully placed!');
-        return;
-    }
-
-    if (e.target.closest('#clearCartBtn')) {
-        saveCart([]);
-        renderCart();
-        hideUndoBar();
-        return;
-    }
-
-    if (e.target.closest('#undoRemoveBtn') && lastRemovedItem) {
-        const cart = getCart();
-        const exists = cart.find(i => i.id === lastRemovedItem.id && i.size === lastRemovedItem.size);
-        if (!exists) {
-            cart.push(lastRemovedItem);
-            saveCart(cart);
-            renderCart();
+    function setCheckoutLoading(loading) {
+        const confirmBtn = document.getElementById("confirmOrderBtn");
+        const checkoutBtn = document.getElementById("checkoutBtn");
+        if (confirmBtn) {
+            confirmBtn.disabled = loading;
+            confirmBtn.textContent = loading ? "Placing..." : "Confirm";
         }
-        hideUndoBar();
-        return;
+        if (checkoutBtn) checkoutBtn.disabled = loading;
     }
-
-    if (e.target.classList.contains('qty-btn')) {
-        const { id, size, delta } = e.target.dataset;
-        updateCartQuantity(id, size, Number(delta));
-        renderCart();
-        return;
+    function openCheckoutModal() {
+        const modal = document.getElementById("checkoutModal");
+        if (!modal) return;
+        const cart = getCart();
+        if (!cart.length) return showToast("Your cart is empty.", "warning");
+        if (typeof requireSignedInUser === "function" && !requireSignedInUser("You have to sign in to checkout.")) return;
+        const previewId = `NYL-${Date.now()}`;
+        const idEl = document.getElementById("modalOrderId");
+        if (idEl) idEl.textContent = previewId;
+        setCheckoutError("");
+        modal.style.display = "flex";
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
     }
-
-    if (e.target.classList.contains('remove-btn')) {
-        const { id, size } = e.target.dataset;
-        removeFromCart(id, size);
-        renderCart();
+    function closeCheckoutModal() {
+        const modal = document.getElementById("checkoutModal");
+        if (!modal) return;
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        modal.style.display = "none";
     }
-});
-
-const applyPromoBtn = document.getElementById('applyPromo');
-if (applyPromoBtn) {
-    applyPromoBtn.addEventListener('click', () => {
-        const code = (document.getElementById('promoInput')?.value || '').toUpperCase().trim();
-        const coupon = getCoupons().find(c => c.code === code);
-        if (!coupon) {
-            activeDiscount = 0;
-            alert('Invalid promo code');
-        } else {
-            activeDiscount = Number(coupon.discount) || 0;
-            alert(`Promo applied! ${activeDiscount}% discount`);
+    function render() {
+        const cart = getCart();
+        const itemsEl = document.getElementById("cartItems");
+        const emptyEl = document.getElementById("cartEmpty");
+        const layoutEl = document.getElementById("cartLayout");
+        if (!itemsEl) return;
+        if (!cart.length) {
+            if (emptyEl) emptyEl.style.display = "block";
+            if (layoutEl) layoutEl.style.display = "none";
+            updateSummary();
+            return;
         }
+        if (emptyEl) emptyEl.style.display = "none";
+        if (layoutEl) layoutEl.style.display = "";
+        itemsEl.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-image"><img src="${item.image || ""}" alt="${item.name}"></div>
+                <div class="cart-item-info"><h3>${item.name}</h3><p>${item.selectedColor || "-"} / ${item.selectedSize || "-"}</p><p><strong>${item.price} EGP</strong></p></div>
+                <div class="cart-item-controls">
+                    <button class="qty-btn" data-key="${item.productId}|${item.selectedColor}|${item.selectedSize}" data-delta="-1">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="qty-btn" data-key="${item.productId}|${item.selectedColor}|${item.selectedSize}" data-delta="1">+</button>
+                </div>
+                <button class="btn btn-danger btn-small remove-btn" data-key="${item.productId}|${item.selectedColor}|${item.selectedSize}">Remove</button>
+            </div>
+        `).join("");
         updateSummary();
+    }
+    function updateSummary() {
+        const cart = getCart();
+        const count = cart.reduce((s, i) => s + Number(i.quantity || 0), 0);
+        const subtotal = cart.reduce((s, i) => s + Number(i.price || 0) * Number(i.quantity || 0), 0);
+        const freeShippingThreshold = 300;
+        const shipping = count ? (subtotal >= freeShippingThreshold ? 0 : 50) : 0;
+        const discount = Math.min(Math.max(0, Number(promoState.discountAmount || 0)), subtotal + shipping);
+        const total = subtotal + shipping - discount;
+        lastTotal = total;
+        document.getElementById("summaryItemCount") && (document.getElementById("summaryItemCount").textContent = String(count));
+        document.getElementById("summarySubtotal") && (document.getElementById("summarySubtotal").textContent = `${subtotal} EGP`);
+        document.getElementById("summaryTotal") && (document.getElementById("summaryTotal").textContent = `${total} EGP`);
+        const shippingRow = document.getElementById("summaryShipping");
+        const shippingProgressBar = document.getElementById("shippingProgressBar");
+        const shippingProgressText = document.getElementById("shippingProgressText");
+        const progress = Math.max(0, Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100)));
+        if (shippingProgressBar) shippingProgressBar.style.width = `${progress}%`;
+        if (shippingProgressText) {
+            shippingProgressText.textContent = subtotal >= freeShippingThreshold
+                ? "Free shipping unlocked"
+                : `Add ${freeShippingThreshold - subtotal} EGP for free shipping`;
+        }
+        if (shippingRow) shippingRow.textContent = `${shipping} EGP`;
+        const promoApplied = document.getElementById("promoApplied");
+        const promoDiscount = document.getElementById("promoDiscount");
+        if (promoApplied && promoDiscount) {
+            promoApplied.style.display = discount > 0 ? "flex" : "none";
+            promoDiscount.textContent = discount > 0 ? `-${discount} EGP` : "0";
+        }
+        const eta = document.getElementById("estimatedDelivery");
+        if (eta) {
+            if (!count) eta.textContent = "-";
+            else {
+                const target = new Date();
+                target.setDate(target.getDate() + 3);
+                eta.textContent = target.toLocaleDateString();
+            }
+        }
+        renderConvertedTotal();
+    }
+    async function renderConvertedTotal() {
+        const target = document.getElementById("currencySelect")?.value || "USD";
+        const out = document.getElementById("summaryConvertedTotal");
+        if (!out) return;
+        if (!lastTotal) {
+            out.textContent = "-";
+            return;
+        }
+        try {
+            if (!rateCache[target]) {
+                const payload = await Api.getCurrencyRate("EGP", target);
+                rateCache[target] = Number(payload.rate || 0);
+            }
+            const rate = Number(rateCache[target] || 0);
+            if (!rate) throw new Error("rate unavailable");
+            out.textContent = `${(lastTotal * rate).toFixed(2)} ${target}`;
+        } catch {
+            out.textContent = "Unavailable";
+        }
+    }
+    async function placeOrder() {
+        const user = DB.getCurrentUser();
+        if (!user) return showToast("Please login first.", "error");
+        if (!Api.token()) return showToast("Login session missing. Please login again.", "error");
+        const cart = getCart();
+        if (!cart.length) return showToast("Your cart is empty.", "warning");
+        let shippingAddress;
+        try {
+            shippingAddress = getShippingAddress();
+            setCheckoutError("");
+        } catch (err) {
+            setCheckoutError(err.message || "Please complete shipping details.");
+            showToast(err.message || "Please complete shipping details.", "error");
+            return;
+        }
+        setCheckoutLoading(true);
+        const failures = [];
+        const createdOrders = [];
+        for (const item of cart) {
+            try {
+                const product = await Api.getProductById(item.productId);
+                if (!product) throw new Error("Product not found.");
+                const created = await Api.createOrder({
+                    productId: product._id || product.id,
+                    quantity: Number(item.quantity || 0),
+                    selectedColor: item.selectedColor,
+                    selectedSize: item.selectedSize,
+                    promoCode: promoState.code || '',
+                    shippingAddress
+                });
+                createdOrders.push(created);
+            } catch (err) {
+                failures.push(`${item.name} (${item.selectedColor}/${item.selectedSize}): ${err?.message || "Failed"}`);
+            }
+        }
+        setCheckoutLoading(false);
+        if (failures.length) {
+            closeCheckoutModal();
+            return showToast(`Some items could not be ordered: ${failures.join(" | ")}`, "error", 7000);
+        }
+        saveCart([]);
+        render();
+        closeCheckoutModal();
+        const ids = createdOrders.map(o => o?.id).filter(Boolean);
+        showOrderConfirmation(ids);
+        showToast(ids.length ? `Order placed successfully. Order IDs: ${ids.join(", ")}` : "Order placed successfully.", "success", 6000);
+    }
+    document.addEventListener("click", async (e) => {
+        if (e.target.closest("#clearCartBtn")) {
+            if (!confirm("Clear all items from cart?")) return;
+            promoState = { code: '', discountAmount: 0, sellerId: '' };
+            return saveCart([]), render();
+        }
+        if (e.target.closest("#checkoutBtn")) return openCheckoutModal();
+        if (e.target.closest("#confirmOrderBtn")) return placeOrder();
+        if (e.target.closest("#cancelCheckoutBtn")) return closeCheckoutModal();
+        const qtyBtn = e.target.closest(".qty-btn");
+        if (qtyBtn) {
+            const [pid, color, size] = qtyBtn.dataset.key.split("|");
+            const delta = Number(qtyBtn.dataset.delta);
+            const cart = getCart();
+            const item = cart.find(i => i.productId === pid && i.selectedColor === color && i.selectedSize === size);
+            if (!item) return;
+            item.quantity = Math.max(0, Number(item.quantity || 0) + delta);
+            saveCart(cart.filter(i => i.quantity > 0));
+            promoState = { code: '', discountAmount: 0, sellerId: '' };
+            return render();
+        }
+        const remove = e.target.closest(".remove-btn");
+        if (remove) {
+            const [pid, color, size] = remove.dataset.key.split("|");
+            promoState = { code: '', discountAmount: 0, sellerId: '' };
+            saveCart(getCart().filter(i => !(i.productId === pid && i.selectedColor === color && i.selectedSize === size)));
+            render();
+        }
     });
-}
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeCheckoutModal();
+    });
+    document.getElementById("checkoutBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        openCheckoutModal();
+    });
+    document.getElementById("applyPromo")?.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const code = String(document.getElementById("promoInput")?.value || "").trim().toUpperCase();
+        if (!code) return showToast("Enter a promo code.", "warning");
+        if (typeof requireSignedInUser === "function" && !requireSignedInUser("Sign in to apply a promo code.")) return;
+        if (!Api.token()) return showToast("Login session missing. Please login again.", "error");
+        const cart = getCart();
+        if (!cart.length) return showToast("Your cart is empty.", "warning");
+        try {
+            const quote = await Api.getPromoQuote({
+                promoCode: code,
+                items: cart.map((item) => ({
+                    productId: item.productId,
+                    quantity: Number(item.quantity || 0)
+                }))
+            });
+            promoState = {
+                code,
+                discountAmount: Number(quote?.discountAmount || 0),
+                sellerId: String(quote?.sellerId || '')
+            };
+            updateSummary();
+            showToast(`Promo ${code} applied.`, "success");
+        } catch (err) {
+            promoState = { code: '', discountAmount: 0, sellerId: '' };
+            updateSummary();
+            showToast(err?.message || "Promo code is invalid.", "error");
+        }
+    });
+    document.getElementById("currencySelect")?.addEventListener("change", () => {
+        renderConvertedTotal();
+    });
+    document.getElementById("confirmOrderBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        placeOrder();
+    });
+    document.getElementById("cancelCheckoutBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeCheckoutModal();
+    });
+    render();
+})();
