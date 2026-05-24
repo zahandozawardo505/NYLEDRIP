@@ -4,590 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NileDrip | Profile</title>
-
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../CSS/style-base.css">
-
-    <style>
-        .profile-wrap {
-            max-width: 1100px;
-            margin: 110px auto 40px;
-            padding: 0 16px;
-        }
-
-        .profile-shell {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-        }
-
-        .panel {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 18px;
-        }
-
-        .greet {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .mail {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            word-break: break-word;
-        }
-
-        .menu-link {
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 12px 10px;
-            color: var(--text-primary);
-            text-decoration: none;
-            border-radius: 8px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font: inherit;
-        }
-
-        .menu-link.active,
-        .menu-link:hover {
-            background: rgba(255, 0, 110, 0.1);
-            color: var(--primary-color);
-        }
-
-        .menu-divider {
-            margin: 12px 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .tab-section {
-            display: none;
-        }
-
-        .tab-section.active {
-            display: block;
-        }
-
-        .order-head {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-        }
-
-        .chip {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .chip-online {
-            background: #e8f0ff;
-            color: #1f5abf;
-        }
-
-        .chip-store {
-            background: #fff5e6;
-            color: #b26a00;
-        }
-
-        .chip-delivered {
-            background: #e8f9ed;
-            color: #227a38;
-        }
-
-        .price {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 16px 0;
-        }
-
-        .muted {
-            color: var(--text-secondary);
-        }
-
-        .logout-btn {
-            width: 100%;
-        }
-
-        .info-box {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
-            margin-top: 14px;
-        }
-
-        .form-row {
-            margin-bottom: 14px;
-        }
-
-        .form-row label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .form-row input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        @media (max-width: 900px) {
-            .profile-shell {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/style-profile.css">
 </head>
-
 <body>
+<nav class="navbar"><div class="container"><div class="navbar-brand"><a href="../index.html" class="logo">NILE<span class="drip">DRIP</span></a></div><div class="navbar-menu" id="navbarMenu"><a href="shop.html" class="nav-link">Shop</a><a href="profile.html" class="nav-link active">Profile</a></div><div class="navbar-actions"><a href="wishlist.html" class="cart-icon-btn wishlist-icon-btn" aria-label="Wishlist"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg><span id="wishlistNavBadge" class="cart-nav-badge" style="display:none">0</span></a><a href="cart.html" class="cart-icon-btn" aria-label="Cart"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg><span id="cartNavBadge" class="cart-nav-badge" style="display:none">0</span></a><button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></button></div></div></nav>
 
-<nav class="navbar">
-    <div class="container">
-        <div class="navbar-brand">
-            <a href="../index.html" class="logo">
-                NILE<span class="drip">DRIP</span>
-            </a>
+<main class="container profile-shell">
+    <aside class="profile-card">
+        <img id="avatarPreview" class="profile-avatar" alt="Avatar">
+        <h1 class="profile-title" id="greetText">Hi User</h1>
+        <p id="mailText" class="profile-sub"></p>
+        <p id="lastLoginText" class="profile-sub"></p>
+        <label for="avatarInput" class="profile-sub">Profile photo</label>
+        <input id="avatarInput" type="file" accept="image/jpeg,image/png,image/webp" class="profile-input">
+        <button class="btn btn-primary" id="uploadAvatarBtn">Upload Avatar</button>
+        <div class="stats-grid">
+            <div class="stat-card"><h4>Orders</h4><p id="ordersCount">0</p></div>
+            <div class="stat-card"><h4>Wishlist</h4><p id="wishlistCount">0</p></div>
+            <div class="stat-card"><h4>Cart</h4><p id="cartCount">0</p></div>
+        </div>
+        <div class="profile-actions">
+            <button class="btn btn-secondary" id="syncStateBtn">Sync Cart/Wishlist</button>
+            <button class="btn btn-secondary" id="logoutAllBtn">Logout All Devices</button>
+            <button class="btn btn-danger" id="logoutBtn">Logout</button>
+        </div>
+    </aside>
+
+    <section class="profile-list">
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Account Details</h2></div>
+            <div class="profile-grid-2">
+                <div><label>First Name</label><input id="firstNameInput" class="profile-input" placeholder="First name"></div>
+                <div><label>Last Name</label><input id="lastNameInput" class="profile-input" placeholder="Last name"></div>
+            </div>
+            <div class="profile-grid-2">
+                <div><label>Email</label><input id="emailInput" class="profile-input" type="email" placeholder="Email"></div>
+                <div><label>Phone</label><input id="phoneInput" class="profile-input" placeholder="Phone"></div>
+            </div>
+            <button class="btn btn-primary" id="saveDetailsBtn">Save Details</button>
         </div>
 
-        <div class="navbar-menu" id="navbarMenu">
-            <a href="shop.html" class="nav-link">Shop</a>
-            <a href="profile.html" class="nav-link active">Profile</a>
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Change Password</h2></div>
+            <div class="profile-grid-2">
+                <div><label>Current Password</label><input id="currentPasswordInput" type="password" class="profile-input"></div>
+                <div><label>New Password</label><input id="newPasswordInput" type="password" class="profile-input"></div>
+            </div>
+            <div><label>Confirm New Password</label><input id="confirmPasswordInput" type="password" class="profile-input"></div>
+            <button class="btn btn-primary" id="changePasswordBtn">Update Password</button>
         </div>
 
-        <div class="navbar-actions">
-            <a href="wishlist.html" class="cart-icon-btn" aria-label="Wishlist">♡</a>
-            <a href="cart.html" class="cart-icon-btn" aria-label="Cart">🛒</a>
-
-            <button class="hamburger" id="hamburger" type="button">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Preferences</h2></div>
+            <div class="profile-grid-2">
+                <div><label>Language</label><select id="prefLanguage" class="profile-select"><option value="en">English</option></select></div>
+                <div></div>
+            </div>
+            <div class="profile-checkbox-stack">
+                <div class="profile-checkbox-row">
+                    <input type="checkbox" id="prefOrderUpdates">
+                    <label for="prefOrderUpdates">Order updates notifications</label>
+                </div>
+                <div class="profile-checkbox-row">
+                    <input type="checkbox" id="prefMarketingEmails">
+                    <label for="prefMarketingEmails">Marketing emails</label>
+                </div>
+            </div>
+            <div class="profile-actions"><button class="btn btn-primary" id="savePreferencesBtn">Save Preferences</button></div>
         </div>
-    </div>
-</nav>
 
-<div class="profile-wrap">
-    <div class="profile-shell">
-
-        <aside class="panel">
-            <h1 class="greet" id="greetText">Hi Mohamed</h1>
-            <p class="mail" id="mailText">moh.tarek.arafa@gmail.com</p>
-
-            <button class="menu-link active" type="button" data-tab="purchases">My purchases</button>
-            <button class="menu-link" type="button" data-tab="returns">Returns</button>
-            <button class="menu-link" type="button" data-tab="details">Personal details</button>
-            <button class="menu-link" type="button" data-tab="addresses">Saved addresses</button>
-
-            <div class="menu-divider"></div>
-
-            <button id="logoutBtn" class="btn btn-secondary logout-btn" type="button">
-                Log out
-            </button>
-        </aside>
-
-        <main class="panel">
-
-            <section id="purchases" class="tab-section active">
-                <h2>My purchases</h2>
-
-                <div class="order-head">
-                    <span class="chip chip-online">Online</span>
-                    <span class="chip chip-store">Store</span>
-                    <span class="chip chip-delivered">Delivered</span>
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Address Book</h2></div>
+            <div class="profile-grid-2">
+                <div><label>Label</label><input id="addrLabel" class="profile-input" placeholder="Home"></div>
+                <div><label>Full Name</label><input id="addrFullName" class="profile-input"></div>
+            </div>
+            <div class="profile-grid-2">
+                <div><label>Phone</label><input id="addrPhone" class="profile-input"></div>
+                <div><label>City</label><input id="addrCity" class="profile-input"></div>
+            </div>
+            <div><label>Address Line 1</label><input id="addrLine1" class="profile-input"></div>
+            <div><label>Address Line 2</label><input id="addrLine2" class="profile-input"></div>
+            <div class="profile-grid-2">
+                <div><label>State</label><input id="addrState" class="profile-input"></div>
+                <div><label>Postal Code</label><input id="addrPostalCode" class="profile-input"></div>
+            </div>
+            <div class="profile-grid-2">
+                <div><label>Country</label><input id="addrCountry" class="profile-input" value="Egypt"></div>
+                <div>
+                    <div class="profile-checkbox-row">
+                        <input type="checkbox" id="addrDefault">
+                        <label for="addrDefault">Set as default</label>
+                    </div>
                 </div>
+            </div>
+            <button class="btn btn-primary" id="addAddressBtn">Add Address</button>
+            <div id="addressesList" class="profile-list" style="margin-top:12px;"></div>
+        </div>
 
-                <p>This order has 2 deliveries</p>
-                <p class="muted">You received it on 20/07/25</p>
-                <p class="price">EGP 6,170</p>
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Order History</h2></div>
+            <div id="ordersList" class="profile-list"></div>
+        </div>
 
-                <hr style="border:0;border-top:1px solid var(--border-color);margin:18px 0;">
+        <div class="profile-card">
+            <div class="profile-section-head"><h2>Support</h2></div>
+            <p class="profile-sub">Need help with returns, shipping, or account issues?</p>
+            <p class="support-links">
+                <a href="mailto:hello@niledrip.com">Email Support</a>
+                <a href="mailto:returns@niledrip.com">Request Return</a>
+                <a href="shop.html">Continue Shopping</a>
+            </p>
+        </div>
+    </section>
 
-                <h3>Did you shop as a guest?</h3>
-                <p class="muted">
-                    If you can't find your purchase, it may be because you ordered without registering.
-                </p>
+</main>
 
-                <a href="shop.html" class="btn btn-primary">
-                    Find order page
-                </a>
-            </section>
-
-            <section id="returns" class="tab-section">
-                <h2>Returns</h2>
-
-                <div class="info-box">
-                    <h3>No active returns</h3>
-                    <p class="muted">
-                        You do not have any return requests right now.
-                    </p>
-                </div>
-
-                <div class="info-box">
-                    <h3>Return policy</h3>
-                    <p class="muted">
-                        Items can be returned within 14 days if they are unused and in original condition.
-                    </p>
-                </div>
-            </section>
-
-            <section id="details" class="tab-section">
-                <h2>Personal details</h2>
-
-                <div class="form-row">
-                    <label for="firstNameInput">First name</label>
-                    <input type="text" id="firstNameInput" placeholder="First name">
-                </div>
-
-                <div class="form-row">
-                    <label for="lastNameInput">Last name</label>
-                    <input type="text" id="lastNameInput" placeholder="Last name">
-                </div>
-
-                <div class="form-row">
-                    <label for="emailInput">Email</label>
-                    <input type="email" id="emailInput" placeholder="Email">
-                </div>
-
-                <button class="btn btn-primary" id="saveDetailsBtn" type="button">
-                    Save details
-                </button>
-            </section>
-
-            <section id="addresses" class="tab-section">
-                <h2>Saved addresses</h2>
-
-                <div class="info-box">
-                    <h3>Home address</h3>
-                    <p class="muted" id="addressText">No saved address yet.</p>
-                </div>
-
-                <div class="form-row" style="margin-top:16px;">
-                    <label for="addressInput">Add / Edit address</label>
-                    <input type="text" id="addressInput" placeholder="Example: Cairo, Egypt">
-                </div>
-
-                <button class="btn btn-primary" id="saveAddressBtn" type="button">
-                    Save address
-                </button>
-            </section>
-
-        </main>
-
+<div class="rating-modal" id="profileRatingModal" aria-hidden="true">
+    <div class="rating-modal-card">
+        <h3>Rate delivered product</h3>
+        <p class="profile-sub" id="profileRatingProductText"></p>
+        <div class="star-rating-input" id="profileReviewStars" role="radiogroup" aria-label="Rating"></div>
+        <textarea id="profileReviewComment" class="profile-input" placeholder="Optional comment"></textarea>
+        <div class="profile-actions">
+            <button class="btn btn-secondary" id="cancelProfileRatingBtn" type="button">Cancel</button>
+            <button class="btn btn-primary" id="submitProfileRatingBtn" type="button">Submit Review</button>
+        </div>
     </div>
 </div>
-
-<script src="../JS/store.js"></script>
-<script src="../JS/theme.js"></script>
-<script src="../JS/main.js"></script>
-<script src="../JS/profile.js"></script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NileDrip | Profile</title>
-
-    <link rel="stylesheet" href="../CSS/style-base.css">
-
-    <style>
-        .profile-wrap {
-            max-width: 1100px;
-            margin: 110px auto 40px;
-            padding: 0 16px;
-        }
-
-        .profile-shell {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-        }
-
-        .panel {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 18px;
-        }
-
-        .greet {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .mail {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            word-break: break-word;
-        }
-
-        .menu-link {
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 12px 10px;
-            color: var(--text-primary);
-            text-decoration: none;
-            border-radius: 8px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font: inherit;
-        }
-
-        .menu-link.active,
-        .menu-link:hover {
-            background: rgba(255, 0, 110, 0.1);
-            color: var(--primary-color);
-        }
-
-        .menu-divider {
-            margin: 12px 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .tab-section {
-            display: none;
-        }
-
-        .tab-section.active {
-            display: block;
-        }
-
-        .order-head {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-        }
-
-        .chip {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .chip-online {
-            background: #e8f0ff;
-            color: #1f5abf;
-        }
-
-        .chip-store {
-            background: #fff5e6;
-            color: #b26a00;
-        }
-
-        .chip-delivered {
-            background: #e8f9ed;
-            color: #227a38;
-        }
-
-        .price {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 16px 0;
-        }
-
-        .muted {
-            color: var(--text-secondary);
-        }
-
-        .logout-btn {
-            width: 100%;
-        }
-
-        .info-box {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
-            margin-top: 14px;
-        }
-
-        .form-row {
-            margin-bottom: 14px;
-        }
-
-        .form-row label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .form-row input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        @media (max-width: 900px) {
-            .profile-shell {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<nav class="navbar">
-    <div class="container">
-        <div class="navbar-brand">
-            <a href="../index.html" class="logo">
-                NILE<span class="drip">DRIP</span>
-            </a>
-        </div>
-
-        <div class="navbar-menu" id="navbarMenu">
-            <a href="shop.html" class="nav-link">Shop</a>
-            <a href="profile.html" class="nav-link active">Profile</a>
-        </div>
-
-        <div class="navbar-actions">
-            <a href="wishlist.html" class="cart-icon-btn" aria-label="Wishlist">♡</a>
-            <a href="cart.html" class="cart-icon-btn" aria-label="Cart">🛒</a>
-
-            <button class="hamburger" id="hamburger" type="button">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </div>
-</nav>
-
-<div class="profile-wrap">
-    <div class="profile-shell">
-
-        <aside class="panel">
-            <h1 class="greet" id="greetText">Hi Mohamed</h1>
-            <p class="mail" id="mailText">moh.tarek.arafa@gmail.com</p>
-
-            <button class="menu-link active" type="button" data-tab="purchases">My purchases</button>
-            <button class="menu-link" type="button" data-tab="returns">Returns</button>
-            <button class="menu-link" type="button" data-tab="details">Personal details</button>
-            <button class="menu-link" type="button" data-tab="addresses">Saved addresses</button>
-
-            <div class="menu-divider"></div>
-
-            <button id="logoutBtn" class="btn btn-secondary logout-btn" type="button">
-                Log out
-            </button>
-        </aside>
-
-        <main class="panel">
-
-            <section id="purchases" class="tab-section active">
-                <h2>My purchases</h2>
-
-                <div class="order-head">
-                    <span class="chip chip-online">Online</span>
-                    <span class="chip chip-store">Store</span>
-                    <span class="chip chip-delivered">Delivered</span>
-                </div>
-
-                <p>This order has 2 deliveries</p>
-                <p class="muted">You received it on 20/07/25</p>
-                <p class="price">EGP 6,170</p>
-
-                <hr style="border:0;border-top:1px solid var(--border-color);margin:18px 0;">
-
-                <h3>Did you shop as a guest?</h3>
-                <p class="muted">
-                    If you can't find your purchase, it may be because you ordered without registering.
-                </p>
-
-                <a href="shop.html" class="btn btn-primary">
-                    Find order page
-                </a>
-            </section>
-
-            <section id="returns" class="tab-section">
-                <h2>Returns</h2>
-
-                <div class="info-box">
-                    <h3>No active returns</h3>
-                    <p class="muted">
-                        You do not have any return requests right now.
-                    </p>
-                </div>
-
-                <div class="info-box">
-                    <h3>Return policy</h3>
-                    <p class="muted">
-                        Items can be returned within 14 days if they are unused and in original condition.
-                    </p>
-                </div>
-            </section>
-
-            <section id="details" class="tab-section">
-                <h2>Personal details</h2>
-
-                <div class="form-row">
-                    <label for="firstNameInput">First name</label>
-                    <input type="text" id="firstNameInput" placeholder="First name">
-                </div>
-
-                <div class="form-row">
-                    <label for="lastNameInput">Last name</label>
-                    <input type="text" id="lastNameInput" placeholder="Last name">
-                </div>
-
-                <div class="form-row">
-                    <label for="emailInput">Email</label>
-                    <input type="email" id="emailInput" placeholder="Email">
-                </div>
-
-                <button class="btn btn-primary" id="saveDetailsBtn" type="button">
-                    Save details
-                </button>
-            </section>
-
-            <section id="addresses" class="tab-section">
-                <h2>Saved addresses</h2>
-
-                <div class="info-box">
-                    <h3>Home address</h3>
-                    <p class="muted" id="addressText">No saved address yet.</p>
-                </div>
-
-                <div class="form-row" style="margin-top:16px;">
-                    <label for="addressInput">Add / Edit address</label>
-                    <input type="text" id="addressInput" placeholder="Example: Cairo, Egypt">
-                </div>
-
-                <button class="btn btn-primary" id="saveAddressBtn" type="button">
-                    Save address
-                </button>
-            </section>
-
-        </main>
-
-    </div>
-</div>
-
-<script src="../JS/store.js"></script>
-<script src="../JS/theme.js"></script>
-<script src="../JS/main.js"></script>
-<script src="../JS/profile.js"></script>
-
+<script src="../JS/store.js"></script><script src="../JS/db.js"></script><script src="../JS/i18n.js"></script><script src="../JS/api.js"></script><script src="../JS/utils.js"></script><script src="../JS/theme.js"></script><script src="../JS/main.js"></script><script src="../JS/profile.js"></script>
 </body>
 </html>
