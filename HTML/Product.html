@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NileDrip | Product</title>
     <!-- FIX: Backslashes replaced with forward slashes -->
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../CSS/style-base.css">
     <link rel="stylesheet" href="../CSS/style-product.css">
 </head>
@@ -29,6 +30,7 @@
                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                     </svg>
+                    <span class="cart-nav-badge" id="wishlistNavBadge" style="display:none">0</span>
                 </a>
 
                 <a href="cart.html" class="cart-icon-btn" aria-label="Cart">
@@ -64,18 +66,18 @@
     <!-- Product Section -->
     <section class="product-section">
         <div class="container">
-            <a href="shop.html" class="back-link">← Back to Shop</a>
+            <a href="shop.html" class="back-link">Back to Shop</a>
 
             <div class="product-layout">
                 <!-- Product Images -->
                 <div class="product-images">
                     <div class="main-image">
-                        <img id="mainImage" src="https://via.placeholder.com/500x600" alt="Product">
+                        <img id="mainImage" src="../assets/images/bmw.webp" alt="Product">
                     </div>
                     <div class="thumbnail-images">
-                        <img class="thumbnail" src="https://via.placeholder.com/100x120" alt="View 1">
-                        <img class="thumbnail" src="https://via.placeholder.com/100x120" alt="View 2">
-                        <img class="thumbnail" src="https://via.placeholder.com/100x120" alt="View 3">
+                        <img class="thumbnail" src="../assets/images/bmw.webp" alt="View 1">
+                        <img class="thumbnail" src="../assets/images/bmw.webp" alt="View 2">
+                        <img class="thumbnail" src="../assets/images/bmw.webp" alt="View 3">
                     </div>
                 </div>
 
@@ -85,14 +87,14 @@
                         <a href="shop.html">Shop</a> / <span id="productCategory">Category</span>
                     </div>
 
-                    <h1 id="productName">Loading…</h1>
+                    <h1 id="productName">Loading...</h1>
                     <div class="product-rating">
-                        <div class="stars">★★★★★</div>
-                        <span>(128 reviews)</span>
+                        <div class="stars">-----</div>
+                        <span id="productReviewCount">(0 reviews)</span>
                     </div>
 
                     <div class="product-price">
-                        <span class="current-price" id="productPrice">—</span>
+                        <span class="current-price" id="productPrice">-</span>
                         <span class="currency">EGP</span>
                     </div>
 
@@ -127,7 +129,7 @@
                     <div class="form-group">
                         <label>Quantity</label>
                         <div class="quantity-selector">
-                            <button class="qty-btn" id="decreaseQty">−</button>
+                            <button class="qty-btn" id="decreaseQty">-</button>
                             <input type="number" id="quantity" value="1" min="1" max="10">
                             <button class="qty-btn" id="increaseQty">+</button>
                         </div>
@@ -137,8 +139,8 @@
                     <!-- Add to Cart -->
                     <button class="btn btn-primary btn-block btn-large" id="addToCartBtn">Add to Cart</button>
                     <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button class="btn btn-secondary btn-block" id="wishlistBtn" type="button" style="flex:1;">Wishlist ❤️</button>
-                        <button class="btn btn-secondary btn-block" id="tryOnBtn" type="button" style="flex:1; border-color:var(--secondary-color); color:var(--secondary-color);">Try It On ✨</button>
+                        <button class="btn btn-secondary btn-block wishlist-btn" id="wishlistBtn" type="button" style="flex:1;">Wishlist</button>
+                        <button class="btn btn-secondary btn-block" id="tryOnBtn" type="button" style="flex:1; border-color:var(--secondary-color); color:var(--secondary-color);">Try It On</button>
                     </div>
 
                     <!-- AR Modal -->
@@ -153,21 +155,21 @@
                     <!-- Product Info -->
                     <div class="product-info">
                         <div class="info-item">
-                            <span class="info-icon">🚚</span>
+                            <span class="info-icon" aria-hidden="true">🚚</span>
                             <div>
                                 <h4>Free Shipping</h4>
                                 <p>On orders over 300 EGP</p>
                             </div>
                         </div>
                         <div class="info-item">
-                            <span class="info-icon">↩️</span>
+                            <span class="info-icon" aria-hidden="true">↩️</span>
                             <div>
                                 <h4>Easy Returns</h4>
                                 <p>14-day money-back guarantee</p>
                             </div>
                         </div>
                         <div class="info-item">
-                            <span class="info-icon">🔒</span>
+                            <span class="info-icon" aria-hidden="true">🔒</span>
                             <div>
                                 <h4>Secure Checkout</h4>
                                 <p>Encrypted & verified payment</p>
@@ -179,8 +181,8 @@
                     <div class="seller-card">
                         <h4>Sold by</h4>
                         <a href="#" class="seller-link">
-                            <strong>Raak Brand</strong>
-                            <span class="seller-rating">★★★★★ (342 reviews)</span>
+                            <strong>Nilora</strong>
+                            <span class="seller-rating">Verified seller</span>
                         </a>
                     </div>
                 </div>
@@ -193,17 +195,43 @@
                     <!-- Populated by JS -->
                 </div>
             </section>
+            <section class="related-products">
+                <h2>You May Also Like</h2>
+                <div class="products-grid" id="mayLikeGrid"></div>
+            </section>
+            <section class="related-products">
+                <h2>Recently Viewed</h2>
+                <div class="products-grid" id="recentGrid"></div>
+            </section>
+            <section class="related-products">
+                <h2>Ratings & Reviews</h2>
+                <div id="reviewEligibilityMessage" class="profile-sub"></div>
+                <form id="reviewForm" class="product-form" style="max-width:700px;margin:0 auto 14px;display:none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reviewRating">Rating</label>
+                            <div class="star-rating-input" id="reviewStarInput" role="radiogroup" aria-label="Rating"></div>
+                            <select id="reviewRating" required style="display:none;">
+                                <option value="">Choose</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewComment">Comment</label>
+                        <textarea id="reviewComment" placeholder="Share your feedback"></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit Review</button>
+                </form>
+                <div id="ratingBreakdown" class="reviews-list"></div>
+                <div id="reviewsList" class="reviews-list"></div>
+            </section>
         </div>
     </section>
-
-    <!-- AR Modal -->
-    <div class="ar-modal" id="arModal">
-        <div class="ar-container">
-            <video id="arVideo" autoplay playsinline></video>
-            <img id="arOverlay" src="" alt="Overlay">
-            <button class="ar-close" id="closeAr">&times;</button>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -234,6 +262,8 @@
 
 <script src="../JS/store.js"></script>
 <script src="../JS/db.js"></script>
+<script src="../JS/i18n.js"></script>
+<script src="../JS/api.js"></script>
 <script src="../JS/utils.js"></script>
 <script src="../JS/cart.js"></script>
 <script src="../JS/product-page.js"></script>
