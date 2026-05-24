@@ -20,13 +20,15 @@
     background: var(--bg-primary) !important;
     border-radius: 16px !important;
     padding: 40px !important;
-    max-width: 400px !important;
+    max-width: 520px !important;
     width: 90% !important;
-    text-align: center !important;
+    text-align: left !important;
     box-shadow: var(--shadow) !important;
     animation: fadeIn 0.3s ease-out !important;
     position: relative !important;
     margin: auto !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
 }
 
 #checkoutModal .modal-content h2 {
@@ -46,6 +48,28 @@
 #checkoutModal .modal-actions {
     display: flex;
     gap: 10px;
+}
+
+.checkout-form-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.checkout-form-grid .form-group {
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+.checkout-form-grid label {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.checkout-form-grid textarea {
+    min-height: 88px;
 }
 
 /* CART PAGE */
